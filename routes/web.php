@@ -2,7 +2,6 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
-use FastRoute\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +18,6 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->get('/test', function() use ($router){
-    return 'docker works';
-});
+// $router->get('/key', function(){
+//     return \Illuminate\Support\Str::random(32);
+// });
