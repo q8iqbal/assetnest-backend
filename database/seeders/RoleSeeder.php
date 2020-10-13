@@ -26,6 +26,8 @@ class RoleSeeder extends Seeder
                     'role_name' => 'Staff',
                 ],
             ]);
+        }else{
+            echo "\e[31mTable is not empty, therefore NOT ";
         }
     }
 }
