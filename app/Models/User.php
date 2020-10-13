@@ -7,10 +7,12 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
+    use SoftDeletes;
     use Authenticatable, Authorizable, HasFactory;
 
     /**
@@ -19,7 +21,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'role_id',
+        'company_id',
+        'name',
+        'email',
+        'photo',
     ];
 
     /**
@@ -29,5 +35,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
+        'deleted_at',
     ];
+    protected $table = 'user';
+    public $timestamps = false;
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+
+    public static function getValidationRules(){
+        return [
+            'name' => 'required',
+            'company_id' => 'required:exist:company,id',
+            'role_id' => 'required|exist:role,id',
+            'email' => 'required|email',
+            'password' => 'required',
+            'photo' => 'mimes:jpeg, png, bmp, webp',
+        ];
+    }
 }
