@@ -21,6 +21,7 @@ class CreateUserTable extends Migration
             $table->string('email',255)->nullable(false);
             $table->string('password',255)->nullable(false);
             $table->string('photo',255);
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +32,8 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user');
+        Schema::dropIfExists('user', function(Blueprint $table){
+            $table->dropSoftDeletes();
+        });
     }
 }
