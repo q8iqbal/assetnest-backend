@@ -41,7 +41,31 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public $timestamps = false;
 
     public function role(){
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function company(){
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
+    public function ownerCompany(){
+        return $this->hasMany(Company::class, 'owner_id');
+    }
+
+    public function assetHistory(){
+        return $this->hasMany(AssetHistory::class, 'user_id');
+    }
+
+    public function activityHistory(){
+        return $this->hasMany(ActivityHistory::class, 'admin_id');
+    }
+
+    public function userActivityHistory(){
+        return $this->hasMany(ActivityHistory::class, 'user_id');
+    }
+
+    public function asset(){
+        return $this->hasMany(Asset::class, 'user_id');
     }
 
     public static function getValidationRules(){
