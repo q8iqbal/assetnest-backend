@@ -25,7 +25,7 @@ class CreateActivityHistoryTable extends Migration
             $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('activity_id')->references('id')->on('activity')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamp('activity_date',0);
+            $table->timestamp('activity_date',0)->useCurrent();
         });
     }
 

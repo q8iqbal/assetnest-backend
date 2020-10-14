@@ -20,7 +20,7 @@ class CreateUserTable extends Migration
             $table->string('name',255)->nullable(false);
             $table->string('email',255)->nullable(false);
             $table->string('password',255)->nullable(false);
-            $table->string('photo',255);
+            $table->string('photo',255)->nullable(true);
             $table->softDeletes();
         });
     }

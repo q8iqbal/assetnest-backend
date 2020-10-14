@@ -23,14 +23,14 @@ class CreateAssetTable extends Migration
             $table->foreign('type_id')->references('id')->on('asset_type')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('status_id')->references('id')->on('asset_status')->onDelete('no action')->onUpdate('cascade');
             $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('photo',255);
+            $table->string('photo',255)->nullable(true);
             $table->string('product_code',255)->nullable(false);
             $table->string('name',255)->nullable(false);
-            $table->timestamp('purchase_date',0);
+            $table->timestamp('purchase_date',0)->useCurrent();
             $table->timestamp('start_date', 0)->useCurrent();
             $table->string('location',255);
             $table->string('price',255);
-            $table->string('note', 255);
+            $table->string('note', 255)->nullable(true);
         });
     }
 
