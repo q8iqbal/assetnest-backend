@@ -29,10 +29,10 @@ class AssetHistory extends Model implements AuthenticatableContract, Authorizabl
 
     public static function getValidationRules(){
         return [
-            'user_id' => 'required|exist:user,id',
-            'asset_id' => 'required|exist:asset,id',
-            'status_id' => 'required|exist:status,id',
-            'company_id' => 'required|exist:company,id',
+            'user_id' => 'required|exists:user,id',
+            'asset_id' => 'required|exists:asset,id',
+            'status_id' => 'required|exists:status,id',
+            'company_id' => 'required|exists:company,id',
             'start_date' => 'required',
             'finnish_date' => 'required|after:start_date',
         ];

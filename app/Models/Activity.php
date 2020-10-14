@@ -32,8 +32,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public static function getValidateResult(){
         return [
-            'admin_id' => 'required|exist:user,id',
-            'user_id' => 'required|exist:user,id',
+            'admin_id' => 'required|exists:user,id',
+            'user_id' => 'required|exists:user,id',
             'company_id',
             'activity_id',
         ];

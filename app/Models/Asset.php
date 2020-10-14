@@ -38,10 +38,10 @@ class Asset extends Model implements AuthenticatableContract, AuthorizableContra
 
     public static function getValidateRules(){
         return [
-            'user_id' => 'required|exist:user,id',
-            'type_id' => 'required|exist:asset_type,id',
-            'status_id' => 'required|exist:asset_status,id',
-            'company_id' => 'required|exist:company,id',
+            'user_id' => 'required|exists:user,id',
+            'type_id' => 'required|exists:asset_type,id',
+            'status_id' => 'required|exists:asset_status,id',
+            'company_id' => 'required|exists:company,id',
             'photo' => 'file',
             'product_code' => 'required',
             'name' => 'required',
