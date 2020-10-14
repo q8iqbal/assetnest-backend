@@ -7,12 +7,10 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use SoftDeletes;
     use Authenticatable, Authorizable, HasFactory;
 
     /**
@@ -20,38 +18,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @var array
      */
+
     protected $fillable = [
-        'role_id',
+        'admin_id',
+        'user_id',
+        'activity_date',
         'company_id',
-        'name',
-        'email',
-        'photo',
+        'activity_id',
     ];
 
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'deleted_at',
-    ];
     protected $table = 'user';
     public $timestamps = false;
 
-    public function role(){
-        return $this->belongsTo(Role::class);
-    }
-
-    public static function getValidationRules(){
+    public static function getValidateResult(){
         return [
-            'name' => 'required',
-            'company_id' => 'required',
-            'role_id' => 'required|exist:role,id',
-            'email' => 'required|email',
-            'password' => 'required',
-            'photo' => 'mimes:jpeg, png, bmp, webp',
+            'admin_id' => 'required|exist:user,id',
+            'user_id' => 'required|exist:user,id',
+            'company_id',
+            'activity_id',
         ];
+    }
+    
+    public function activity_history(){
+        return $this->hasMany(ActivityHistory::class, 'activity_id');
     }
 }
