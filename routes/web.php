@@ -27,11 +27,13 @@ use Illuminate\Support\Facades\Hash;
 
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
+$router->get('logout', 'AuthController@logout');
+
 
 $router->group(['prefix' => 'user'], function () use ($router){
-    $router->get('/', function(){
-        return 'get';
-    });
+    $router->get('/', ['middleware' => 'auth.role:1', function(){
+        return 'oppai';
+    }]);
 
     $router->get('/owner', function(){
         return 'get';
