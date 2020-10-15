@@ -45,8 +45,6 @@ class Asset extends Model implements AuthenticatableContract, AuthorizableContra
             'photo' => 'file',
             'product_code' => 'required',
             'name' => 'required',
-            'purchase_date' => 'required',
-            'start_date'=> 'required',
         ];
     }
 
