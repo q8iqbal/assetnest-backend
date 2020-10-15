@@ -2,9 +2,10 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Models\Company;
+use App\Models\User;
 use Laravel\Lumen\Routing\Router;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,23 +18,22 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-// $router->get('/', function () use ($router) {
-//     return $router->app->version();
-// });
-
-// $router->get('/key', function(){
-//     return \Illuminate\Support\Str::random(32);
-// });
-
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
 
 
 $router->group(['prefix' => 'user'], function () use ($router){
-    $router->get('/', ['middleware' => 'auth.role:1', function(){
-        return 'oppai';
-    }]);
+    // $router->get('/', ['middleware' => 'auth.role:1', function(){
+    //     return 'oppai';
+    // }]);
+
+    $router->get('/', function (){
+        $user = User::all();
+        return response()->json([
+            'user' => $user
+        ]);
+    });
 
     $router->get('/owner', function(){
         return 'get';
@@ -66,7 +66,10 @@ $router->group(['prefix' => 'user'], function () use ($router){
 
 $router->group(['prefix' => 'company'], function () use ($router){
     $router->get('/', function(){
-        return 'get';
+        $company = Company::all();
+        return response()->json([
+            'company' => $company
+        ]);
     });
 
     $router->get('/{id}', function($id){
