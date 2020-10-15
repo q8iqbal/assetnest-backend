@@ -27,7 +27,7 @@ class AssetAttachment extends Model implements AuthenticatableContract, Authoriz
 
     public static function getValidateRules(){
         return [
-            'attachment' => 'file',
+            'attachment' => 'string',
             'asset_id' => 'exists:asset,id',
         ];
     }

@@ -21,54 +21,38 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-        $this->validateJson($request);
+        $this->validateJson($request, 'user' ,User::getValidationRules());
+        $this->validateJson($request, 'company' ,Company::getValidationRules());
 
         $userInput = $request->json()->get('user');
         $companyInput = $request->json()->get('company');
 
-        try{
-            
-            $company = Company::firstOrNew([
-                'name' => $companyInput['name'],
-            ]);
-            $user = User::firstOrNew([
-                'email' => $userInput['email'],
-            ]);
+        $company = Company::firstOrNew([
+            'name' => $companyInput['name'],
+        ]);
+        $user = User::firstOrNew([
+            'email' => $userInput['email'],
+        ]);
+        
+        if(!$company->exists && !$user->exists){
 
-            
-            if(!$company->exists || !$user->exists){
+            $company = Company::create($companyInput);
 
-                $company = Company::create($companyInput);
+            $user = User::firstOrNew($userInput);
+            $user['password'] = Hash::make($userInput['password']);
+            $user['role_id'] = 3;
+            $user['company_id'] = $company['id'];
+            $user->save();
 
-                $user = User::firstOrNew($userInput);
-                $user['password'] = Hash::make($userInput['password']);
-                $user['role_id'] = 3;
-                $user['company_id'] = $company['id'];
-                $user->save();
-
-                $company['owner_id'] = $user['id'];
-                $company->save();
-                
-            }else{
-                return response()->json([
-                    'company' => $company,
-                    'user' => $user,
-                    'massage' => 'user or company already exist',
-                ], 204);
-            }
-
-            return response()->json([
-                'company' => $company,
-                'user' => $user,
-                'massage' => 'user created',
-            ], 201);
-
-        }catch(Exception $e){
-            return response()->json([
-                'error' => $e,
-                'massage' => 'user create failed',
-            ], 406);
+            $company['owner_id'] = $user['id'];
+            $company->save();
+            return $this->responseRequestSuccess([$user,$company]);
         }
+
+        $string = [
+            'message' => 'user and company already exist',
+        ];
+        return $this->responseRequestError($string,406);
     }
 
     public function login(Request $request){
@@ -77,10 +61,10 @@ class AuthController extends Controller
 
         try {
             if (! $token = Auth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 401);
+                return $this->responseRequestError('invalid_credentials', 401);
             }
         } catch (Exception $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return $this->responseRequestError('could_not_create_token', 500);
         }
 
         return $this->respondWithToken($token);
@@ -89,20 +73,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ]);
-    }
-
-    public function validateJson(Request $request){
-        $validateUser = Validator::make($request->get('user'),User::getValidationRules());
-        $validateCompany = Validator::make($request->get('company'),Company::getValidationRules());
-
-        if($validateCompany->fails() || $validateUser->fails()){
-            return response()->json([
-                'message1' => $validateCompany->errors()->all(),
-                'message2' => $validateUser->errors()->all(),
-            ],406);
-        }
+        $this->responseRequestSuccess('logout sucess');
     }
 }

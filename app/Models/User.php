@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'photo' => 'mimes:jpeg, png, bmp, webp',
+            'photo' => 'string',
         ];
     }
 

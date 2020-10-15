@@ -34,7 +34,7 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
             'name' => 'required',
             'address' => 'required',
             'phone' => 'required',
-            'logo' => 'mimes:jpeg, png, bmp, webp',
+            'logo' => 'string',
         ];
     }
 

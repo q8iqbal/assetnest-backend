@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
+$router->post('tes', 'Controller@uploadImage');
 
 
 $router->group(['prefix' => 'user'], function () use ($router){
