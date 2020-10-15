@@ -54,7 +54,7 @@ class AuthController extends Controller
                     'company' => $company,
                     'user' => $user,
                     'massage' => 'user or company already exist',
-                ], 404);
+                ], 204);
             }
 
             return response()->json([
@@ -67,7 +67,7 @@ class AuthController extends Controller
             return response()->json([
                 'error' => $e,
                 'massage' => 'user create failed',
-            ], 404);
+            ], 406);
         }
     }
 
@@ -95,21 +95,14 @@ class AuthController extends Controller
     }
 
     public function validateJson(Request $request){
-        if ($request->isJson()){
+        $validateUser = Validator::make($request->get('user'),User::getValidationRules());
+        $validateCompany = Validator::make($request->get('company'),Company::getValidationRules());
 
-            $validateUser = Validator::make($request->get('user'),User::getValidationRules());
-            $validateCompany = Validator::make($request->get('company'),Company::getValidationRules());
-
-            if($validateCompany->fails() || $validateUser->fails()){
-                return response()->json([
-                    'message' => $validateCompany->errors()->all(),
-                ],401);
-            }
-
-        }else{
+        if($validateCompany->fails() || $validateUser->fails()){
             return response()->json([
-                'message' => 'data must must be json'
-            ],401);
+                'message1' => $validateCompany->errors()->all(),
+                'message2' => $validateUser->errors()->all(),
+            ],406);
         }
     }
 }
