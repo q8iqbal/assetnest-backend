@@ -31,9 +31,10 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
 
     public static function getValidationRules(){
         return [
-            'company_name' => 'required',
+            'name' => 'required',
             'address' => 'required',
             'phone' => 'required',
+            'logo' => 'mimes:jpeg, png, bmp, webp',
         ];
     }
 

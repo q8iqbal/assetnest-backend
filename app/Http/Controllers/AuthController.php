@@ -6,9 +6,8 @@ use App\Models\Company;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -16,50 +15,60 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login' , 'register']]);
+        $this->middleware('auth:api', ['except' => ['login' , 'register', 'jsonLoginCheck']]);
+    }
+
+    public function validateJson(Request $request){
+        if ($request->isJson()){
+
+            $validateUser = Validator::make($request->get('user'),User::getValidationRules());
+            $validateCompany = Validator::make($request->get('company'),Company::getValidationRules());
+
+            if($validateCompany->fails() || $validateUser->fails()){
+                return response()->json([
+                    'message' => $validateCompany->errors()->all(),
+                ],401);
+            }
+
+        }else{
+            return response()->json([
+                'message' => 'data must must be json'
+            ],401);
+        }
     }
 
     public function register(Request $request){
-        $this->validate($request, User::getValidationRules());
-        $this->validate($request, Company::getValidationRules());
+        return $this->validateJson($request);
+
+        $userInput = $request->json()->get('user');
+        $companyInput = $request->json()->get('company');
 
         try{
             $company = Company::firstOrNew([
-                'logo' => $request->input('logo'),
-                'name' => $request->input('company_name'),
-                'address' => $request->input('address'),
-                'description' => $request->input('description'),
-                'phone' => $request->input('phone'),
+                'name' => $companyInput['name'],
+            ]);
+            $user = User::firstOrNew([
+                'email' => $userInput['email'],
             ]);
             
-            if(!$company->exists){
+            if(!$company->exists || !$user->exists){
+
+                $company = Company::create($companyInput);
+                $company['owner_id'] = $user['id'];
                 $company->save();
+
+                $user = User::firstOrNew($userInput);
+                $user['role_id'] = 3;
+                $user['company_id'] = $company['id'];
+                $user->save();
+                
             }else{
                 return response()->json([
                     'company' => $company,
-                    'massage' => 'company already exist',
+                    'user' => $user,
+                    'massage' => 'user or company already exist',
                 ], 404);
             }
-
-            $user = User::firstOrNew([
-                'role_id' => 1,
-                'company_id' => $company->id,
-                'name' => $request->input('user_name'),
-                'password' => Hash::make($request->input('password')),
-                'email' => $request->input('email'),
-                'photo' => $request->input('photo'),
-            ]);
-
-            if(!$user->exists){
-                $user->save();
-            }else{
-                return response()->json([
-                    'company' => $user,
-                    'massage' => 'user already exist',
-                ], 404);
-            }
-            Company::find($company->id)->update(['owner_id'=>$user->id]);
-            $company->save();
 
             return response()->json([
                 'company' => $company,
@@ -68,7 +77,6 @@ class AuthController extends Controller
             ], 201);
 
         }catch(Exception $e){
-
             return response()->json([
                 'error' => $e,
                 'massage' => 'user create failed',
