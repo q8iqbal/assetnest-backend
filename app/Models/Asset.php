@@ -42,7 +42,7 @@ class Asset extends Model implements AuthenticatableContract, AuthorizableContra
             'type_id' => 'required|exists:asset_type,id',
             'status_id' => 'required|exists:asset_status,id',
             'company_id' => 'required|exists:company,id',
-            'photo' => 'file',
+            'photo' => 'string',
             'product_code' => 'required',
             'name' => 'required',
             'purchase_date' => 'required',

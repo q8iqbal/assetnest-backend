@@ -73,12 +73,13 @@ $app->configure('app');
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+//     App\Http\Middleware\JsonCheck::class
 // ]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'auth.role' => \App\Http\Middleware\RoleAuthorization::class,
+    'auth.json' => App\Http\Middleware\JsonCheck::class,
 ]);
 
 /*

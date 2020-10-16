@@ -12,22 +12,16 @@ class RoleAuthorization
 {
     public function handle($request, Closure $next, ...$roles)
     {
-        try {
-            //Access token from the request        
-            $token = JWTAuth::parseToken();
-            //Try authenticating user       
+        try {      
+            $token = JWTAuth::parseToken();      
             $user = $token->authenticate();
-        } catch (TokenExpiredException $e) {
-            //Thrown if token has expired        
+        } catch (TokenExpiredException $e) {      
             return $this->unauthorized('Your token has expired. Please, login again.');
         } catch (TokenInvalidException $e) {
-            //Thrown if token invalid
             return $this->unauthorized('Your token is invalid. Please, login again.');
         }catch (JWTException $e) {
-            //Thrown if token was not found in the request.
             return $this->unauthorized('Please, attach a Bearer Token to your request');
         }
-        //If user was authenticated successfully and user is in one of the acceptable roles, send to next request.
         if ($user && in_array($user->role_id, $roles)) {
             return $next($request);
         }

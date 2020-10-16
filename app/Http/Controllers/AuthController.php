@@ -7,6 +7,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -15,81 +17,54 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login' , 'register', 'jsonLoginCheck']]);
-    }
-
-    public function validateJson(Request $request){
-        if ($request->isJson()){
-
-            $validateUser = Validator::make($request->get('user'),User::getValidationRules());
-            $validateCompany = Validator::make($request->get('company'),Company::getValidationRules());
-
-            if($validateCompany->fails() || $validateUser->fails()){
-                return response()->json([
-                    'message' => $validateCompany->errors()->all(),
-                ],401);
-            }
-
-        }else{
-            return response()->json([
-                'message' => 'data must must be json'
-            ],401);
-        }
+        $this->middleware('auth:api', ['except' => ['login' , 'register', 'validateJson']]);
     }
 
     public function register(Request $request){
-        return $this->validateJson($request);
+        $this->validateJson($request, 'user' ,User::getValidationRules());
+        $this->validateJson($request, 'company' ,Company::getValidationRules());
 
         $userInput = $request->json()->get('user');
         $companyInput = $request->json()->get('company');
 
-        try{
-            $company = Company::firstOrNew([
-                'name' => $companyInput['name'],
-            ]);
-            $user = User::firstOrNew([
-                'email' => $userInput['email'],
-            ]);
-            
-            if(!$company->exists || !$user->exists){
+        $company = Company::firstOrNew([
+            'name' => $companyInput['name'],
+        ]);
+        $user = User::firstOrNew([
+            'email' => $userInput['email'],
+        ]);
+        
+        if(!$company->exists && !$user->exists){
 
-                $company = Company::create($companyInput);
-                $company['owner_id'] = $user['id'];
-                $company->save();
+            $company = Company::create($companyInput);
 
-                $user = User::firstOrNew($userInput);
-                $user['role_id'] = 3;
-                $user['company_id'] = $company['id'];
-                $user->save();
-                
-            }else{
-                return response()->json([
-                    'company' => $company,
-                    'user' => $user,
-                    'massage' => 'user or company already exist',
-                ], 404);
-            }
+            $user = User::firstOrNew($userInput);
+            $user['password'] = Hash::make($userInput['password']);
+            $user['role_id'] = 3;
+            $user['company_id'] = $company['id'];
+            $user->save();
 
-            return response()->json([
-                'company' => $company,
-                'user' => $user,
-                'massage' => 'user created',
-            ], 201);
-
-        }catch(Exception $e){
-            return response()->json([
-                'error' => $e,
-                'massage' => 'user create failed',
-            ], 404);
+            $company['owner_id'] = $user['id'];
+            $company->save();
+            return $this->responseRequestSuccess([$user,$company]);
         }
+
+        $string = [
+            'message' => 'user and company already exist',
+        ];
+        return $this->responseRequestError($string,406);
     }
 
     public function login(Request $request){
         $this->validate($request, User::getLoginValidationRules());
         $credentials = $request->only(['email', 'password']);
 
-        if (!$token = JWTAuth::attempt($credentials)){
-            return response()->json(['message' => 'Unauthorized'], 401);
+        try {
+            if (! $token = Auth::attempt($credentials)) {
+                return $this->responseRequestError('invalid_credentials', 401);
+            }
+        } catch (Exception $e) {
+            return $this->responseRequestError('could_not_create_token', 500);
         }
 
         return $this->respondWithToken($token);
@@ -97,7 +72,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        Auth::logout();
+        $this->responseRequestSuccess('logout sucess');
     }
 }
