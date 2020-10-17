@@ -22,7 +22,7 @@ class AuthController extends Controller
     public function register(Request $request){
         $this->validateJson($request, 'user' ,User::getValidationRules());
         $this->validateJson($request, 'company' ,Company::getValidationRules());
-
+        
         $userInput = $request->json()->get('user');
         $companyInput = $request->json()->get('company');
 

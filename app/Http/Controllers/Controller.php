@@ -10,6 +10,11 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    const USER_PICTURE_PATH = '/upload/user/';
+    const ASSET_PICTURE_PATH = '/upload/asset/';
+    const COMPANY_PICTURE_PATH = '/upload/company/';
+    const ASSET_ATTACHMENT_PATH = '/upload/user/';
+    
     protected function respondWithToken($token)
     {
         return response()->json([

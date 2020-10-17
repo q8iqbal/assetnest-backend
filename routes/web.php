@@ -21,21 +21,15 @@ use Illuminate\Http\Request;
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
-$router->post('tes', 'Controller@uploadImage');
 
 
 $router->group(['prefix' => 'user'], function () use ($router){
-    // $router->get('/', ['middleware' => 'auth.role:1', function(){
-    //     return 'oppai';
-    // }]);
-
-    // $router->get('/', function (){
-    //     $user = User::all();
-    //     return response()->json([
-    //         'user' => $user
-    //     ]);
-    // });
-    $router->get('/', ['uses' => 'UserController@index']);
+    $router->get('/', function (){
+        $user = User::all();
+        return response()->json([
+            'user' => $user
+        ]);
+    });
 
     $router->get('/owner', function(){
         return 'get';
@@ -88,7 +82,7 @@ $router->group(['prefix' => 'asset'], function () use ($router){
     });
 });
 
-$router->group(['prefix' => 'asset_attachment'], function () use ($router){
+$router->group(['prefix' => 'assethist'], function () use ($router){
     $router->get('/', function(){
         return 'get';
     });
