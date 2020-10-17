@@ -29,12 +29,13 @@ $router->group(['prefix' => 'user'], function () use ($router){
     //     return 'oppai';
     // }]);
 
-    $router->get('/', function (){
-        $user = User::all();
-        return response()->json([
-            'user' => $user
-        ]);
-    });
+    // $router->get('/', function (){
+    //     $user = User::all();
+    //     return response()->json([
+    //         'user' => $user
+    //     ]);
+    // });
+    $router->get('/', ['uses' => 'UserController@index']);
 
     $router->get('/owner', function(){
         return 'get';
@@ -48,46 +49,21 @@ $router->group(['prefix' => 'user'], function () use ($router){
         return 'get';
     });
 
-    $router->get('/{id}', function($id){
-        return "get $id";
-    });
+    $router->get('/{id}', ['uses' => 'UserController@show']);
 
-    $router->post('/', function(){
-        return 'post';
-    });
+    $router->post('/', ['uses' => 'UserController@store']);
 
-    $router->put('/{id}', function($id){
-        return "put $id";
-    });
+    $router->put('/{id}', ['uses' => 'UserController@update']);
 
-    $router->delete('/{id}', function($id){
-        return "delete $id";
-    });
+    $router->delete('/{id}', ['uses' => 'UserController@destroy']);
 });
 
 $router->group(['prefix' => 'company'], function () use ($router){
-    $router->get('/', function(){
-        $company = Company::all();
-        return response()->json([
-            'company' => $company
-        ]);
-    });
-
-    $router->get('/{id}', function($id){
-        return "get $id";
-    });
-
-    $router->post('/', function(){
-        return 'post';
-    });
-
-    $router->put('/{id}', function($id){
-        return "put $id";
-    });
-
-    $router->delete('/{id}', function($id){
-        return "delete $id";
-    });
+    $router->get('/', ['uses' => 'CompanyController@index']);
+    $router->get('/{id}', ['uses' => 'CompanyController@show']);
+    $router->post('/', ['uses' => 'CompanyController@store']);
+    $router->put('/{id}', ['uses' => 'CompanyController@update']);
+    $router->delete('/{id}', ['uses' => 'CompanyController@destroy']);
 });
 
 $router->group(['prefix' => 'asset'], function () use ($router){
