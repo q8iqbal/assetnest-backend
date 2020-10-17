@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Asset;
+use App\Models\AssetAttachment;
 use Illuminate\Http\Request;
 
-class AssetController extends Controller
+class AttachmentController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -17,84 +18,80 @@ class AssetController extends Controller
     }
 
     public function index(){
-        $assets = Asset::all();
+        $attachment = AssetAttachment::all();
     
         $out = [
-            "massage" => "list_asset",
-            "result" => $assets,
+            "massage" => "list_attachment",
+            "result" => $attachment,
         ];
 
         return response()->json($out, 200); 
     }
     public function show($id){
-        $asset = Asset::find($id);
+        $attachment = AssetAttachment::find($id);
 
         $out = [
-            "massage" => "asset_".$id,
-            "result" => $asset,
+            "massage" => "assetAttachment_".$id,
+            "result" => $attachment,
         ];
 
         return response()->json($out, 200); 
     }
     public function store(Request $request){
-        if($request->isMethod('post')){
-            $this->validateJson($request, 'asset' , Asset::getValidateRules());
+            $this->validateJson($request, 'attachment' , AssetAttachment::getValidateRules());
             
-            $asset = $request->json()->get('asset');
-            $insert = Asset::create($asset);
+            $attachment = $request->json()->get('attachment');
+            $insert = AssetAttachment::create($attachment);
             
             if($insert){
                 $out = [
                     "message" => "success_insert_data",
-                    "result" => $asset,
+                    "result" => $attachment,
                     "code" => 200,
                 ];
             } else {
                 $out = [
                     "message" => "vailed_insert_data",
-                    "result" => $asset,
+                    "result" => $attachment,
                     "code" => 404,
                 ];
             }
             
             return response()->json($out, $out['code']);
-        }
     }
     public function update(Request $request, $id){
-        if($request->isMethod('put')){
-            $this->validateJson($request, 'asset' ,Asset::getValidateRules());
+            $this->validateJson($request, 'attachment' ,AssetAttachment::getValidateRules());
             
-            $assetNew = $request->json()->get('asset');
-            $asset = Asset::find($id);
+            $attachmentNew = $request->json()->get('attachment');
+            $attachment = AssetAttachment::find($id);
 
-            $update = $asset->update($assetNew);
+            $update = $attachment->update($attachmentNew);
 
             if($update){
                 $out = [
                     "message" => "success_update_data",
-                    "result" => $asset,
+                    "result" => $attachment,
                     "code" => 200,
                 ];
             } else {
                 $out = [
                     "message" => "vailed_update_data",
-                    "result" => $asset,
+                    "result" => $attachment,
                     "code" => 404,
                 ];
             }
 
             return response()->json($out, $out['code']);
-        }
     }
     public function destroy($id){
-        $asset = Asset::find($id);
+        $attachment = AssetAttachment::find($id);
 
-        if(!$asset){
+        if(!$attachment){
             $data = [
                 "message" => "id not found",
             ];
         }else{
-            $asset->delete();
+            $attachment->delete();
             $data = [
                 "message" => "success_deleted",
             ];

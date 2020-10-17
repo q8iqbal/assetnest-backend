@@ -61,25 +61,15 @@ $router->group(['prefix' => 'company'], function () use ($router){
 });
 
 $router->group(['prefix' => 'asset'], function () use ($router){
-    $router->get('/', function(){
-        return 'get';
-    });
+    $router->get('/', 'AssetController@index');
 
-    $router->get('/{id}', function($id){
-        return "get $id";
-    });
+    $router->get('/{id}','AssetController@show');
 
-    $router->post('/', function(){
-        return 'post';
-    });
+    $router->post('/', 'AssetController@store');
 
-    $router->put('/{id}', function($id){
-        return "put $id";
-    });
+    $router->put('/{id}', 'AssetController@update');
 
-    $router->delete('/{id}', function($id){
-        return "delete $id";
-    });
+    $router->delete('/{id}', 'AssetController@destroy');
 });
 
 $router->group(['prefix' => 'assethist'], function () use ($router){
@@ -102,4 +92,16 @@ $router->group(['prefix' => 'assethist'], function () use ($router){
     $router->delete('/{id}', function($id){
         return "delete $id";
     });
+});
+
+$router->group(['prefix' => 'attachment'], function () use ($router){
+    $router->get('/', 'AttachmentController@index');
+
+    $router->get('/{id}','AttachmentController@show');
+
+    $router->post('/', 'AttachmentController@store');
+
+    $router->put('/{id}', 'AttachmentController@update');
+
+    $router->delete('/{id}', 'AttachmentController@destroy');
 });
