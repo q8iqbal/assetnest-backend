@@ -21,34 +21,16 @@ use Illuminate\Http\Request;
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
+$router->post('tes', function(Request $request){
+    return response($request->all());
+});
 
 
 $router->group(['prefix' => 'user'], function () use ($router){
-    $router->get('/', function (){
-        $user = User::all();
-        return response()->json([
-            'user' => $user
-        ]);
-    });
-
-    $router->get('/owner', function(){
-        return 'get';
-    });
-    
-    $router->get('/admin', function(){
-        return 'get';
-    });
-
-    $router->get('/staff', function(){
-        return 'get';
-    });
-
+    $router->get('/', ['uses' => 'UserController@index']);
     $router->get('/{id}', ['uses' => 'UserController@show']);
-
     $router->post('/', ['uses' => 'UserController@store']);
-
     $router->put('/{id}', ['uses' => 'UserController@update']);
-
     $router->delete('/{id}', ['uses' => 'UserController@destroy']);
 });
 

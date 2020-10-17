@@ -13,93 +13,45 @@ class AssetController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->middleware('auth:api');
     }
 
-    public function index(){
+    public function index()
+    {
+
         $assets = Asset::all();
-    
-        $out = [
-            "massage" => "list_asset",
-            "result" => $assets,
-        ];
-
-        return response()->json($out, 200); 
+        $this->responseRequestSuccess($assets);
     }
-    public function show($id){
-        $asset = Asset::find($id);
 
-        $out = [
-            "massage" => "asset_".$id,
-            "result" => $asset,
-        ];
-
-        return response()->json($out, 200); 
+    public function show($id)
+    {
+        $asset = Asset::findOrFail($id);
+        $this->responseRequestSuccess($asset);
     }
-    public function store(Request $request){
-        if($request->isMethod('post')){
-            $this->validateJson($request, 'asset' , Asset::getValidateRules());
+
+    public function store(Request $request)
+    {
+        $this->validateJson($request, 'assets' , Asset::getValidateRules());
             
-            $asset = $request->json()->get('asset');
-            $insert = Asset::create($asset);
-            
-            if($insert){
-                $out = [
-                    "message" => "success_insert_data",
-                    "result" => $asset,
-                    "code" => 200,
-                ];
-            } else {
-                $out = [
-                    "message" => "vailed_insert_data",
-                    "result" => $asset,
-                    "code" => 404,
-                ];
-            }
-            
-            return response()->json($out, $out['code']);
-        }
+        $data = $request->json()->get('asset');
+        $asset = Asset::create($data);
+
+        $this->responseRequestSuccess($asset);
     }
-    public function update(Request $request, $id){
-        if($request->isMethod('put')){
-            $this->validateJson($request, 'asset' ,Asset::getValidateRules());
-            
-            $assetNew = $request->json()->get('asset');
-            $asset = Asset::find($id);
 
-            $update = $asset->update($assetNew);
+    public function update(Request $request, $id)
+    {
+        $this->validateJson($request, 'assets' ,Asset::getValidateRules());
 
-            if($update){
-                $out = [
-                    "message" => "success_update_data",
-                    "result" => $asset,
-                    "code" => 200,
-                ];
-            } else {
-                $out = [
-                    "message" => "vailed_update_data",
-                    "result" => $asset,
-                    "code" => 404,
-                ];
-            }
+        $assetNew = $request->json()->get('asset');
+        $asset = Asset::findOrFail($id)->update($assetNew);
 
-            return response()->json($out, $out['code']);
-        }
+        $this->responseRequestSuccess($asset);
     }
-    public function destroy($id){
-        $asset = Asset::find($id);
 
-        if(!$asset){
-            $data = [
-                "message" => "id not found",
-            ];
-        }else{
-            $asset->delete();
-            $data = [
-                "message" => "success_deleted",
-            ];
-        }
-    
-        return response()->json($data, 200);
+    public function destroy($id)
+    {
+        Asset::findOrFail($id)->delete();
+        $this->responseRequestSuccess(null);
     }
 }

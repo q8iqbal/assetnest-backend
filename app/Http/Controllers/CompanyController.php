@@ -14,42 +14,39 @@ class CompanyController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:api');
     }
 
     public function index()
     {
         $companies = Company::all();
-
-        return response()->json($companies);
+        $this->responseRequestSuccess($companies);
     }
     
     public function show($id)
     {
-        $company = Company::find($id);
-
-        return response()->json($company);
+        $company = Company::findOrFail($id);
+        $this->responseRequestSuccess($company);
     }
 
     public function store(Request $request)
     {
-        $company = Company::create($request->all());
-
-        return response()->json($company, 201);
+        $this->validateJson($request, 'companies' ,Company::getValidateRules());
+        $company = Company::create($request->json()->get('company'));
+        $this->responseRequestSuccess($company);
     }
 
     public function update(Request $request, $id)
     {
+        $this->validateJson($request, 'companies' ,Company::getValidateRules());
         $company = Company::findOrFail($id);
-        $company->update($request->all());
-
-        return response()->json($company, 200);
+        $company->update($request->json()->get('company'));
+        $this->responseRequestSuccess($company);
     }
 
     public function destroy($id)
     {
         Company::findOrFail($id)->delete();
-
-        return response('Deleted Successfully', 200);
+        $this->responseRequestSuccess(null);
     }
 }
