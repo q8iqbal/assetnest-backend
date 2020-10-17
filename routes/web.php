@@ -93,3 +93,15 @@ $router->group(['prefix' => 'assethist'], function () use ($router){
         return "delete $id";
     });
 });
+
+$router->group(['prefix' => 'attachment'], function () use ($router){
+    $router->get('/', 'AttachmentController@index');
+
+    $router->get('/{id}','AttachmentController@show');
+
+    $router->post('/', 'AttachmentController@store');
+
+    $router->put('/{id}', 'AttachmentController@update');
+
+    $router->delete('/{id}', 'AttachmentController@destroy');
+});
