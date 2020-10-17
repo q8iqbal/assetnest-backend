@@ -43,7 +43,7 @@ class Controller extends BaseController
 
         if($validate->fails()){
             return $this->responseRequestError(
-                $validate,
+                $validate->errors()->all(),
                 406
             );
         }

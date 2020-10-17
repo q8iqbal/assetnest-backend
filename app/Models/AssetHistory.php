@@ -21,39 +21,25 @@ class AssetHistory extends Model implements AuthenticatableContract, Authorizabl
     protected $fillable = [
         'user_id',
         'asset_id',
-        'status_id',
-        'company_id',
-        'start_date',
-        'finnish_date',
+        'status',
+        'date',
     ];
 
     public static function getValidationRules(){
         return [
             'user_id' => 'required|exists:user,id',
             'asset_id' => 'required|exists:asset,id',
-            'status_id' => 'required|exists:status,id',
-            'company_id' => 'required|exists:company,id',
-            'start_date' => 'required',
-            'finnish_date' => 'required|after:start_date',
+            'status' => 'required',
         ];
     }
 
-    protected $table = 'asset_history';
     public $timestamps = false;
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     public function asset(){
-        return $this->belongsTo(Asset::class, 'asset_id');
-    }
-
-    public function status(){
-        return $this->belongsTo(AssetStatus::class, 'status_id');
-    }
-
-    public function company(){
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsTo(Asset::class);
     }
 }

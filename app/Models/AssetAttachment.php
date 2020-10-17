@@ -19,20 +19,21 @@ class AssetAttachment extends Model implements AuthenticatableContract, Authoriz
      * @var array
      */
     protected $fillable = [
-        'attachment',
+        'path',
+        'filename',
         'asset_id'
     ];
-    protected $table = 'asset_attachment';
     public $timestamps = false;
 
     public static function getValidateRules(){
         return [
-            'attachment' => 'string',
-            'asset_id' => 'exists:asset,id',
+            'path' => 'required|string',
+            'filename' => 'required|string',
+            'asset_id' => 'required|exists:asset,id',
         ];
     }
 
     public function asset(){
-        return $this->belongsTo(Asset::class, 'asset_id');
+        return $this->belongsTo(Asset::class);
     }
 }

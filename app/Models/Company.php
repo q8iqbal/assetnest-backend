@@ -19,42 +19,28 @@ class Company extends Model implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'owner_id',
         'logo',
         'name',
         'address',
         'description',
         'phone',
     ];
-    protected $table = 'company';
     public $timestamps = false;
 
     public static function getValidationRules(){
         return [
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
+            'name' => 'required|string',
+            'address' => 'required|string',
+            'phone' => 'required|string',
             'logo' => 'string',
         ];
     }
 
-    public function user(){
-        return $this->hasMany(User::class, 'user_id');
-    }
-
-    public function owner(){
-        return $this->belongsTo(User::class, 'owner_id');
+    public function users(){
+        return $this->hasMany(User::class);
     }
 
     public function asset(){
-        return $this->hasMany(Asset::class, 'company_id');
-    }
-
-    public function assetHistory(){
-        return $this->hasMany(AssetHistory::class, 'company_id');
-    }
-
-    public function activityHistory(){
-        return $this->hasMany(ActivityHistory::class, 'company_id');
+        return $this->hasMany(Asset::class);
     }
 }
