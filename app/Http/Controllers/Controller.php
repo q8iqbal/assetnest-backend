@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -31,19 +32,18 @@ class Controller extends BaseController
             if ($request->file($fileKey)->move('.'.$destination_path, $image)) {
                 return $user->image = $destination_path . $image;
             } else {
-                return $this->responseRequestError('Cannot upload file');
+                $this->responseRequestError('Cannot upload file');
             }
         } else {
-            return $this->responseRequestError('File not found');
+            $this->responseRequestError('File not found');
         }
     }
 
     public function validateJson(Request $request, $key , $rule){
-        $validate = Validator::make($request->get($key), $rule);
-
+        $validate = Validator::make($request->json()->get($key), $rule);
         if($validate->fails()){
-            return $this->responseRequestError(
-                $validate,
+            $this->responseRequestError(
+                $validate->errors(),
                 406
             );
         }
@@ -51,22 +51,24 @@ class Controller extends BaseController
 
     protected function responseRequestSuccess($ret)
     {
-        return response()->json([
+        throw new HttpResponseException(response()->json([
             'status' => 'success', 
             'data' => $ret,
         ], 200)
         ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        );
     }
 
     protected function responseRequestError($message = 'Bad request', $statusCode = 200)
     {
-        return response()->json([
+        throw new HttpResponseException(response()->json([
             'status' => 'error', 
             'error' => $message,
         ], $statusCode)
         ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        );
     }
 }
 

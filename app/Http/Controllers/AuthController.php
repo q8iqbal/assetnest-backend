@@ -9,15 +9,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login' , 'register', 'validateJson']]);
+        $this->middleware('auth:api', ['except' => ['login' , 'register']]);
+        $this->middleware('auth.json', ['except' => ['login']]);
     }
 
     public function register(Request $request){
@@ -34,25 +33,26 @@ class AuthController extends Controller
             'email' => $userInput['email'],
         ]);
         
-        if(!$company->exists && !$user->exists){
+        if(!$company->exist && !$user->exists){
 
-            $company = Company::create($companyInput);
+            $company= Company::create($companyInput);
+            $company->save();
 
             $user = User::firstOrNew($userInput);
             $user['password'] = Hash::make($userInput['password']);
-            $user['role_id'] = 3;
-            $user['company_id'] = $company['id'];
+            $user['role'] = 'owner';
+            $user['company_id'] = $company->id;
             $user->save();
 
-            $company['owner_id'] = $user['id'];
-            $company->save();
-            return $this->responseRequestSuccess([$user,$company]);
+            $this->responseRequestSuccess([
+                'user' => $user,
+                'company' => $company,
+            ]);
         }
 
-        $string = [
+        $this->responseRequestError([
             'message' => 'user and company already exist',
-        ];
-        return $this->responseRequestError($string,406);
+        ],406);
     }
 
     public function login(Request $request){
@@ -61,10 +61,10 @@ class AuthController extends Controller
 
         try {
             if (! $token = Auth::attempt($credentials)) {
-                return $this->responseRequestError('invalid_credentials', 401);
+                $this->responseRequestError(['invalid_credentials'], 401);
             }
         } catch (Exception $e) {
-            return $this->responseRequestError('could_not_create_token', 500);
+            $this->responseRequestError(['could_not_create_token'], 500);
         }
 
         return $this->respondWithToken($token);
@@ -73,6 +73,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        $this->responseRequestSuccess('logout sucess');
+        $this->responseRequestSuccess(['logout sucess']);
     }
 }

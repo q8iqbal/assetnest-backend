@@ -22,12 +22,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'role_id',
         'company_id',
         'name',
         'email',
-        'photo',
-        'password'
+        'picture',
+        'password',
+        'role',
     ];
 
     /**
@@ -39,11 +39,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'deleted_at',
     ];
-    protected $table = 'user';
     public $timestamps = false;
 
-    public function role(){
-        return $this->belongsTo(Role::class);
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
+    
+    public function assetHistory(){
+        return $this->hasMany(AssetHistory::class);
     }
 
     public static function getValidationRules(){
@@ -51,7 +54,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'photo' => 'string',
+            'picture' => 'string',
         ];
     }
 
