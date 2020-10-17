@@ -41,6 +41,8 @@ class AssetController extends Controller
             $this->validateJson($request, 'asset' , Asset::getValidateRules());
             
             $asset = $request->json()->get('asset');
+            $assetImg = $this->uploadImage();
+
             $insert = Asset::create($asset);
             
             if($insert){

@@ -24,7 +24,7 @@ class Controller extends BaseController
         ], 200);
     }
 
-    public function uploadImage(Request $request, $destination_path = '/upload/user/', $fileKey = 'image')
+    public function uploadImage(Request $request, $destination_path, $fileKey = 'image')
     {
         $user = (object) ['image' => ""];
 
@@ -42,6 +42,7 @@ class Controller extends BaseController
         } else {
             $this->responseRequestError('File not found');
         }
+
     }
 
     public function validateJson(Request $request, $key , $rule){
