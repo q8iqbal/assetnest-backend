@@ -15,52 +15,37 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        
+        $this->middleware('auth:api');
     }
 
-    public function index()
-    {
+    public function index(){
         $users = User::all();
-
-        return response()->json($users);
+        $this->responseRequestSuccess($users);
     }
     
-    public function show($id)
-    {
-        $user = User::find($id);
-
-        return response()->json($user);
+    public function show($id){
+        $user = User::findOrFail($id);
+        $this->responseRequestSuccess($user);
     }
 
-    public function store(Request $request)
-    {
-        $user = User::create($request->all());
+    public function store(Request $request){
+        $this->validateJson($request, 'users' ,User::getValidateRules());
 
-        return response()->json($user, 201);
+        $user = User::create($request->json()->get('user'));
+        $this->responseRequestSuccess($user);
     }
 
     public function update(Request $request, $id)
     {
+        $this->validateJson($request, 'users' ,User::getValidateRules());
         $user = User::findOrFail($id);
-        $user->update($request->all());
-
-        return response()->json($user, 200);
+        $user->update($request->json()->get('user'));
+        $this->responseRequestSuccess($user);
     }
 
     public function destroy($id)
     {
-        User::findOrFail($id)->delete();
-
-        return response('Deleted Successfully', 200);
-    }
-
-    public function createStaff()
-    {
-
-    }
-
-    public function createAdmin()
-    {
-
+        $user = User::findOrFail($id)->delete();
+        $this->responseRequestSuccess($user);
     }
 }

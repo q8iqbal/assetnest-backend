@@ -21,34 +21,16 @@ use Illuminate\Http\Request;
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
+$router->post('tes', function(Request $request){
+    return response($request->all());
+});
 
 
 $router->group(['prefix' => 'user'], function () use ($router){
-    $router->get('/', function (){
-        $user = User::all();
-        return response()->json([
-            'user' => $user
-        ]);
-    });
-
-    $router->get('/owner', function(){
-        return 'get';
-    });
-    
-    $router->get('/admin', function(){
-        return 'get';
-    });
-
-    $router->get('/staff', function(){
-        return 'get';
-    });
-
+    $router->get('/', ['uses' => 'UserController@index']);
     $router->get('/{id}', ['uses' => 'UserController@show']);
-
     $router->post('/', ['uses' => 'UserController@store']);
-
     $router->put('/{id}', ['uses' => 'UserController@update']);
-
     $router->delete('/{id}', ['uses' => 'UserController@destroy']);
 });
 
@@ -62,34 +44,16 @@ $router->group(['prefix' => 'company'], function () use ($router){
 
 $router->group(['prefix' => 'asset'], function () use ($router){
     $router->get('/', 'AssetController@index');
-
     $router->get('/{id}','AssetController@show');
-
     $router->post('/', 'AssetController@store');
-
     $router->put('/{id}', 'AssetController@update');
-
     $router->delete('/{id}', 'AssetController@destroy');
 });
 
-$router->group(['prefix' => 'assethist'], function () use ($router){
-    $router->get('/', function(){
-        return 'get';
-    });
-
-    $router->get('/{id}', function($id){
-        return "get $id";
-    });
-
-    $router->post('/', function(){
-        return 'post';
-    });
-
-    $router->put('/{id}', function($id){
-        return "put $id";
-    });
-
-    $router->delete('/{id}', function($id){
-        return "delete $id";
-    });
+$router->group(['prefix' => 'assethistory'], function () use ($router){
+    $router->get('/', 'AssetHistoryController@index');
+    $router->get('/{id}', 'AssetHistoryController@show');
+    $router->post('/', 'AssetHistoryController@store');
+    $router->put('/{id}', 'AssetHistoryController@update');
+    $router->delete('/{id}', 'AssetHistoryController@destroy');
 });
