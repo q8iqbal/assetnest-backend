@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
+use App\Models\AssetHistory;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller

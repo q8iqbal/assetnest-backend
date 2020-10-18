@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssetHistory;
 use Illuminate\Http\Request;
 
 class AssetHistoryController extends Controller
@@ -13,22 +14,39 @@ class AssetHistoryController extends Controller
      */
     public function __construct()
     {
-        //
+        $this->middleware('auth:api');
     }
 
-    public function index(){
-
+    public function index()
+    {
+        $assethistories = AssetHistory::all();
+        $this->responseRequestSuccess($assethistories);
     }
-    public function show($id){
-
+    
+    public function show($id)
+    {
+        $assethistory = AssetHistory::findOrFail($id);
+        $this->responseRequestSuccess($assethistory);
     }
-    public function store(Request $request){
 
+    public function store(Request $request)
+    {
+        $this->validateJson($request, 'assethistory' ,AssetHistory::getValidateRules());
+        $assethistory = AssetHistory::create($request->json()->get('assethistory'));
+        $this->responseRequestSuccess($assethistory);
     }
-    public function update(Request $request, $id){
 
+    public function update(Request $request, $id)
+    {
+        $this->validateJson($request, 'assethistory' ,AssetHistory::getValidateRules());
+        $assethistory = AssetHistory::findOrFail($id);
+        $assethistory->update($request->json()->get('assethistory'));
+        $this->responseRequestSuccess($assethistory);
     }
-    public function destroy($id){
-        
+
+    public function destroy($id)
+    {
+        AssetHistory::findOrFail($id)->delete();
+        $this->responseRequestSuccess(null);
     }
 }
