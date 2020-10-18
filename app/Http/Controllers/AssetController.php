@@ -18,7 +18,6 @@ class AssetController extends Controller
 
     public function index()
     {
-
         $assets = Asset::all();
         $this->responseRequestSuccess($assets);
     }
@@ -31,7 +30,7 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateJson($request, 'assets' , Asset::getValidateRules());
+        $this->validateJson($request, 'assets' , Asset::getValidationRules());
             
         $data = $request->json()->get('asset');
         $asset = Asset::create($data);
@@ -41,7 +40,7 @@ class AssetController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'assets' ,Asset::getValidateRules());
+        $this->validateJson($request, 'assets' ,Asset::getValidationRules());
 
         $assetNew = $request->json()->get('asset');
         $asset = Asset::findOrFail($id)->update($assetNew);

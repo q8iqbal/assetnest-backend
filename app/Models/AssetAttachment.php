@@ -21,7 +21,7 @@ class AssetAttachment extends Model
         return [
             'path' => 'required|string',
             'filename' => 'required|string',
-            'asset_id' => 'required|exists:asset,id',
+            'asset_id' => 'required|exists:assets,id',
         ];
     }
 
