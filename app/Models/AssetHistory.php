@@ -19,8 +19,8 @@ class AssetHistory extends Model
 
     public static function getValidationRules(){
         return [
-            'user_id' => 'required|exists:user,id',
-            'asset_id' => 'required|exists:asset,id',
+            'user_id' => 'required|exists:users,id',
+            'asset_id' => 'required|exists:assets,id',
             'status' => 'required',
         ];
     }
