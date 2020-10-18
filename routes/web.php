@@ -26,7 +26,7 @@ $router->post('tes', function(Request $request){
 });
 
 
-$router->group(['prefix' => 'user'], function () use ($router){
+$router->group(['prefix' => 'users'], function () use ($router){
     $router->get('/', ['uses' => 'UserController@index']);
     $router->get('/{id}', ['uses' => 'UserController@show']);
     $router->post('/', ['uses' => 'UserController@store']);
@@ -34,7 +34,7 @@ $router->group(['prefix' => 'user'], function () use ($router){
     $router->delete('/{id}', ['uses' => 'UserController@destroy']);
 });
 
-$router->group(['prefix' => 'company'], function () use ($router){
+$router->group(['prefix' => 'companies'], function () use ($router){
     $router->get('/', ['uses' => 'CompanyController@index']);
     $router->get('/{id}', ['uses' => 'CompanyController@show']);
     $router->post('/', ['uses' => 'CompanyController@store']);
@@ -42,7 +42,7 @@ $router->group(['prefix' => 'company'], function () use ($router){
     $router->delete('/{id}', ['uses' => 'CompanyController@destroy']);
 });
 
-$router->group(['prefix' => 'asset'], function () use ($router){
+$router->group(['prefix' => 'assets'], function () use ($router){
     $router->get('/', 'AssetController@index');
     $router->get('/{id}','AssetController@show');
     $router->post('/', 'AssetController@store');
