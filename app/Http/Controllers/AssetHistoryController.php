@@ -19,8 +19,8 @@ class AssetHistoryController extends Controller
     
     public function store(Request $request)
     {
-        $this->validateJson($request, 'assethistory' ,AssetHistory::getValidationRules());
-        $assethistory = AssetHistory::create($request->json()->get('assethistory'));
+        $this->validateJson($request, 'assetHistory' ,AssetHistory::getValidationRules());
+        $assethistory = AssetHistory::create($request->json()->get('assetHistory'));
         $this->responseRequestSuccess($assethistory);
     }
 }
