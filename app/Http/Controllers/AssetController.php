@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Asset;
+use App\Models\AssetHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AssetController extends Controller
@@ -14,41 +16,54 @@ class AssetController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
+        $this->middleware('auth.json');
     }
 
     public function index()
     {
-        // if(request()->has('sort')){
-        //     $assets = QueryBuilder::for(Asset::class)->allowedSorts(['name','id',])->get();
-        // }elseif(request()->has('filter')){
-        //     $assets = QueryBuilder::for(Asset::class)->allowedFilters(['name'])->get();
-        // }else{
-        //     $assets = Asset::all();
-        // }
-        $assets = QueryBuilder::for(Asset::class)
-            ->allowedFilters(['code','name',])
-            ->allowedSorts(['name','id',])
+        $asset = Asset::class;
+        $assets = QueryBuilder::for($asset)
+            ->allowedFilters(['code','name','location'])
+            ->allowedSorts(['name','location'])
             ->get();
+        foreach($assets as $asset){
+            $status = Asset::find($asset['id'])
+            ->assetHistory()
+            ->get('status')
+            ->last();
+
+            $asset['status'] = $status['status'];
+        }
         $this->responseRequestSuccess($assets);
     }
 
     public function show($id)
     {
         $asset = Asset::findOrFail($id);
-        $this->responseRequestSuccess($asset);
-    }
+        $asset['status'] = $asset->assetHistory()->get('status')->last()->status;
+        $asset['history'] = $asset->assetHistory()->get(['date' , 'status' , 'id']);
 
-    public function showHistory($id){
-        $asset = Asset::findOrFail($id);
+        foreach($asset['history'] as $hist){
+            $user = AssetHistory::find($hist['id'])
+            ->user()
+            ->withTrashed()
+            ->get('name')
+            ->all();
+            
+            $hist['user'] = $user[0]['name'];
+        }
+
+        $this->responseRequestSuccess($asset);
     }
 
     public function store(Request $request)
     {
         $this->validateJson($request, 'asset' , Asset::getValidationRules());
-            
+
         $data = $request->json()->get('asset');
-        $asset = Asset::create($data);
+        $data['company_id'] = Auth::user()->company_id;
+        $asset = Asset::firstOrNew($data);
 
         $this->responseRequestSuccess($asset);
     }

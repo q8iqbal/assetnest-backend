@@ -25,27 +25,6 @@ class Controller extends BaseController
         ], 200);
     }
 
-    public function uploadImage(Request $request, $destination_path, $fileKey = 'image')
-    {
-        $user = (object) ['image' => ""];
-
-        if ($request->hasFile($fileKey)) {
-            $original_filename = $request->file($fileKey)->getClientOriginalName();
-            $original_filename_arr = explode('.', $original_filename);
-            $file_ext = end($original_filename_arr);
-            $image = 'U-' . time() . '.' . $file_ext;
-
-            if ($request->file($fileKey)->move('.'.$destination_path, $image)) {
-                return $user->image = $destination_path . $image;
-            } else {
-                $this->responseRequestError('Cannot upload file');
-            }
-        } else {
-            $this->responseRequestError('File not found');
-        }
-
-    }
-
     public function validateJson(Request $request, $key , $rule){
         $validate = Validator::make($request->json()->get($key), $rule);
         if($validate->fails()){

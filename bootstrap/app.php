@@ -75,11 +75,12 @@ $app->configure('query-builder');
 
 // $app->middleware([
 //     App\Http\Middleware\JsonCheck::class
+//     App\Http\Middleware\Authenticate::class
 // ]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
-    'auth.role' => \App\Http\Middleware\RoleAuthorization::class,
+    'auth.role' => App\Http\Middleware\RoleAuthorization::class,
     'auth.json' => App\Http\Middleware\JsonCheck::class,
 ]);
 
