@@ -15,6 +15,7 @@ class CompanyController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        $this->middleware('auth.json');
     }
 
     public function index()
@@ -29,12 +30,12 @@ class CompanyController extends Controller
         $this->responseRequestSuccess($company);
     }
 
-    public function store(Request $request)
-    {
-        $this->validateJson($request, 'company' ,Company::getValidationRules());
-        $company = Company::create($request->json()->get('company'));
-        $this->responseRequestSuccess($company);
-    }
+    // public function store(Request $request)
+    // {
+    //     $this->validateJson($request, 'company' ,Company::getValidationRules());
+    //     $company = Company::create($request->json()->get('company'));
+    //     $this->responseRequestSuccess($company);
+    // }
 
     public function update(Request $request, $id)
     {
@@ -44,9 +45,9 @@ class CompanyController extends Controller
         $this->responseRequestSuccess($company);
     }
 
-    public function destroy($id)
-    {
-        Company::findOrFail($id)->delete();
-        $this->responseRequestSuccess(null);
-    }
+    // public function destroy($id)
+    // {
+    //     Company::findOrFail($id)->delete();
+    //     $this->responseRequestSuccess(null);
+    // }
 }

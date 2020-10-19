@@ -26,11 +26,10 @@ class Asset extends Model
     public static function getValidationRules(){
         return [
             'type' => 'required|string',
-            'company_id' => 'required|exists:companies,id',
-            'photo' => 'string',
             'code' => 'required|string',
             'name' => 'required|string',
             'price' => 'required',
+            'location' => 'required',
         ];
     }
 
