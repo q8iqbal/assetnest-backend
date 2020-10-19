@@ -31,16 +31,16 @@ class AssetHistoryController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateJson($request, 'assethistory' ,AssetHistory::getValidationRules());
-        $assethistory = AssetHistory::create($request->json()->get('assethistory'));
+        $this->validateJson($request, 'assetHistory' ,AssetHistory::getValidationRules());
+        $assethistory = AssetHistory::create($request->json()->get('assetHistory'));
         $this->responseRequestSuccess($assethistory);
     }
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'assethistory' ,AssetHistory::getValidationRules());
+        $this->validateJson($request, 'assetHistory' ,AssetHistory::getValidationRules());
         $assethistory = AssetHistory::findOrFail($id);
-        $assethistory->update($request->json()->get('assethistory'));
+        $assethistory->update($request->json()->get('assetHistory'));
         $this->responseRequestSuccess($assethistory);
     }
 
