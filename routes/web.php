@@ -7,17 +7,6 @@ use App\Models\User;
 use Laravel\Lumen\Routing\Router;
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
-
 $router->post('login', 'AuthController@login');
 $router->post('register', 'AuthController@register');
 $router->get('logout', 'AuthController@logout');
