@@ -15,12 +15,13 @@ class Controller extends BaseController
     const COMPANY_PICTURE_PATH = '/upload/company/';
     const ASSET_ATTACHMENT_PATH = '/upload/user/';
     
-    protected function respondWithToken($token)
+    protected function respondWithToken($token , $user)
     {
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::factory()->getTTL() * 60,
+            'user' => $user,
         ], 200);
     }
 

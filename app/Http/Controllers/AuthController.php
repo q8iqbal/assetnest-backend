@@ -67,7 +67,7 @@ class AuthController extends Controller
             $this->responseRequestError(['could_not_create_token'], 500);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token , Auth::user());
     }
 
     public function logout()

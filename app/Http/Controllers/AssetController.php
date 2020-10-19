@@ -18,7 +18,6 @@ class AssetController extends Controller
 
     public function index()
     {
-
         $assets = Asset::all();
         $this->responseRequestSuccess($assets);
     }
@@ -27,6 +26,10 @@ class AssetController extends Controller
     {
         $asset = Asset::findOrFail($id);
         $this->responseRequestSuccess($asset);
+    }
+
+    public function showHistory($id){
+        $asset = Asset::findOrFail($id);
     }
 
     public function store(Request $request)
