@@ -23,7 +23,7 @@ class Asset extends Model
     ];
     public $timestamps = false;
 
-    public static function getValidateRules(){
+    public static function getValidationRules(){
         return [
             'type' => 'required|string',
             'company_id' => 'required|exists:companies,id',

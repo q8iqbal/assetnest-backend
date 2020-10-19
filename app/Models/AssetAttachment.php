@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AssetAttachment extends Model
 {
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -17,7 +17,7 @@ class AssetAttachment extends Model
     ];
     public $timestamps = false;
 
-    public static function getValidateRules(){
+    public static function getValidationRules(){
         return [
             'path' => 'required|string',
             'filename' => 'required|string',
