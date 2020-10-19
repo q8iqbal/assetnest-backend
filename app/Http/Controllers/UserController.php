@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
-        $this->validateJson($request, 'users' ,User::getValidateRules());
+        $this->validateJson($request, 'users' ,User::getValidationRules());
 
         $user = User::create($request->json()->get('user'));
         $this->responseRequestSuccess($user);
@@ -37,7 +37,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'users' ,User::getValidateRules());
+        $this->validateJson($request, 'users' ,User::getValidationRules());
         $user = User::findOrFail($id);
         $user->update($request->json()->get('user'));
         $this->responseRequestSuccess($user);
