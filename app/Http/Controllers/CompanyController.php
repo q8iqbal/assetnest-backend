@@ -31,14 +31,14 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateJson($request, 'companies' ,Company::getValidationRules());
+        $this->validateJson($request, 'company' ,Company::getValidationRules());
         $company = Company::create($request->json()->get('company'));
         $this->responseRequestSuccess($company);
     }
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'companies' ,Company::getValidationRules());
+        $this->validateJson($request, 'company' ,Company::getValidationRules());
         $company = Company::findOrFail($id);
         $company->update($request->json()->get('company'));
         $this->responseRequestSuccess($company);
