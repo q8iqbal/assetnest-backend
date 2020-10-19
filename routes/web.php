@@ -49,3 +49,11 @@ $router->group(['prefix' => 'assets'], function () use ($router){
     $router->put('/{id}', 'AssetController@update');
     $router->delete('/{id}', 'AssetController@destroy');
 });
+
+$router->group(['prefix' => 'assethistory'], function () use ($router){
+    $router->get('/', 'AssetHistoryController@index');
+    $router->get('/{id}', 'AssetHistoryController@show');
+    $router->post('/', 'AssetHistoryController@store');
+    $router->put('/{id}', 'AssetHistoryController@update');
+    $router->delete('/{id}', 'AssetHistoryController@destroy');
+});
