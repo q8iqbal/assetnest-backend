@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Asset;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBUilder;
 
 class AssetController extends Controller
 {
@@ -13,7 +14,7 @@ class AssetController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
     }
 
     public function index()
@@ -34,7 +35,7 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
-        $this->validateJson($request, 'assets' , Asset::getValidationRules());
+        $this->validateJson($request, 'asset' , Asset::getValidateRules());
             
         $data = $request->json()->get('asset');
         $asset = Asset::create($data);
@@ -44,7 +45,7 @@ class AssetController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'assets' ,Asset::getValidationRules());
+        $this->validateJson($request, 'asset' ,Asset::getValidateRules());
 
         $assetNew = $request->json()->get('asset');
         $asset = Asset::findOrFail($id)->update($assetNew);
@@ -57,4 +58,5 @@ class AssetController extends Controller
         Asset::findOrFail($id)->delete();
         $this->responseRequestSuccess(null);
     }
+
 }
