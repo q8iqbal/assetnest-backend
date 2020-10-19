@@ -31,6 +31,7 @@ class Asset extends Model
             'code' => 'required|string',
             'name' => 'required|string',
             'price' => 'required',
+            'location' => 'required|string'
             // 'purchase_date' => 'required',
         ];
     }

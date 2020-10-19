@@ -51,10 +51,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public static function getValidationRules(){
         return [
-            'name' => 'required',
+            'name' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string',
             'picture' => 'string',
+            'role' => 'required|string',
+//            'company_id' => 'required|exists:companies,id' 
         ];
     }
 
