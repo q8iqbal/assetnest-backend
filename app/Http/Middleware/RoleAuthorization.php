@@ -22,7 +22,7 @@ class RoleAuthorization
         }catch (JWTException $e) {
             return $this->unauthorized('Please, attach a Bearer Token to your request');
         }
-        if ($user && in_array($user->role_id, $roles)) {
+        if ($user && in_array($user->role, $roles)) {
             return $next($request);
         }
 
