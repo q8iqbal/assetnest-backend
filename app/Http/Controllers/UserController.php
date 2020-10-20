@@ -83,8 +83,9 @@ class UserController extends Controller
     public function assetHolded($id){
         $asset = User::findOrFail($id)->
                 asset()->
-                where('assets.status','!=', 'available')->
-                paginate(10);
-        $this->responseRequestSuccess($asset);
+                where('assets.status','!=', 'available');
+        
+        $assets = QueryBuilder::for($asset)->allowedFilters('asset_histories.status')->paginate(10);
+        $this->responseRequestSuccess($assets);
     }
 }
