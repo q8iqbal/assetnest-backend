@@ -24,7 +24,7 @@ class CreateAssetHistoriesTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamp('start_date')->useCurrent();
-            $table->timestamp('finnish_date')->nullable();
+            $table->timestamp('finish_date')->nullable();
             $table->string('status', 255);
         });
     }

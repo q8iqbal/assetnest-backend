@@ -16,6 +16,7 @@ class Asset extends Model
         'photo',
         'code',
         'name',
+        'status',
         'purchase_date',
         'price',
         'location',

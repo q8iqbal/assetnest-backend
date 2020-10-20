@@ -14,14 +14,15 @@ class AssetHistory extends Model
         'user_id',
         'asset_id',
         'status',
-        'date',
+        'start_date',
+        'finish_date',
     ];
 
     public static function getValidationRules(){
         return [
             'user_id' => 'required|exists:users,id',
             'asset_id' => 'required|exists:assets,id',
-            'status' => 'required',
+            'status' => 'required|string',
         ];
     }
 
