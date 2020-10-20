@@ -74,4 +74,9 @@ class AssetController extends Controller
         Asset::findOrFail($id)->delete();
         $this->responseRequestSuccess(null);
     }
+
+    public function attachment($id){
+        $attachments = Asset::findOrFail($id)->attachment()->get();
+        $this->responseRequestSuccess($attachments);
+    }
 }

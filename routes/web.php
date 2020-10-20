@@ -16,6 +16,7 @@ $router->group(['prefix' => 'users'], function () use ($router){
     $router->get('/', ['uses' => 'UserController@index']);
     $router->get('/thrash', ['uses' => 'UserController@thrash']);
     $router->get('/{id}', ['uses' => 'UserController@show']);
+    $router->get('/{id}/assets', ['uses' => 'UserController@assetHolded']);
     $router->post('/', ['uses' => 'UserController@store']);
     $router->post('/image', ['uses' => 'FileController@userPicture']);
     $router->put('/{id}', ['uses' => 'UserController@update']);
@@ -35,7 +36,7 @@ $router->group(['prefix' => 'companies'], function () use ($router){
 $router->group(['prefix' => 'assets'], function () use ($router){
     $router->get('/', 'AssetController@index');
     $router->get('/{id}','AssetController@show');
-    // $router->get('/{id}/attachment', ['uses' => '']);
+    $router->get('/{id}/attachment', ['uses' => 'AssetController@attachment']);
     $router->post('/{id}/attachment', ['uses' => 'FileController@assetAttachment']);
     $router->post('/image', ['uses' => 'FileController@assetPicture']);
     $router->post('/', 'AssetController@store');
