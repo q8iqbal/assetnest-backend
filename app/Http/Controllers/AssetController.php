@@ -25,23 +25,14 @@ class AssetController extends Controller
         $asset = Asset::class;
         $assets = QueryBuilder::for($asset)
             ->allowedFilters(['code','name','location'])
-            ->allowedSorts(['name','location'])
+            ->allowedSorts(['name','location','code'])
             ->get();
-        foreach($assets as $asset){
-            $status = Asset::find($asset['id'])
-            ->assetHistory()
-            ->get('status')
-            ->last();
-
-            $asset['status'] = $status['status'];
-        }
         $this->responseRequestSuccess($assets);
     }
 
     public function show($id)
     {
         $asset = Asset::findOrFail($id);
-        $asset['status'] = $asset->assetHistory()->get('status')->last()->status;
         $asset['history'] = $asset->assetHistory()->get(['date' , 'status' , 'id']);
 
         foreach($asset['history'] as $hist){

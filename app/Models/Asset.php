@@ -47,7 +47,7 @@ class Asset extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function managedUser(){
-        return $this->hasOneThrough(AssetHistory::class, User::class);
+    public function user(){
+        return $this->belongsTo(User::class, AssetHistory::class);
     }
 }

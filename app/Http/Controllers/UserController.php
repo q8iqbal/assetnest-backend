@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
+use Symfony\Component\VarDumper\VarDumper;
 
 class UserController extends Controller
 {
@@ -29,18 +30,6 @@ class UserController extends Controller
         ->get();
         $this->responseRequestSuccess($users);          
     }
-    
-    public function thrash()
-    {
-        $user = User::onlyTrashed()->get();
-        $this->responseRequestSuccess($user);
-    }
-
-    public function restore($id)
-    {
-        $user = User::onlyTrashed()->where('id', $id)->restore();
-        $this->responseRequestSuccess($user);
-    }
 
     public function show($id){
         $user = User::findOrFail($id);
@@ -55,7 +44,6 @@ class UserController extends Controller
             ->all();
             $hist['name'] = $asset[0]['name'];
         }
-
         $this->responseRequestSuccess($user);
     }
 
@@ -77,5 +65,25 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id)->delete();
         $this->responseRequestSuccess($user);
+    }
+
+    public function thrash()
+    {
+        $user = User::onlyTrashed()->get();
+        $this->responseRequestSuccess($user);
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->where('id', $id)->restore();
+        $this->responseRequestSuccess($user);
+    }
+
+    public function assetHolded($id){
+        $asset = User::findOrFail($id)->
+                asset()->
+                where('assets.status','!=', 'available')->
+                get();
+        $this->responseRequestSuccess($asset);
     }
 }
