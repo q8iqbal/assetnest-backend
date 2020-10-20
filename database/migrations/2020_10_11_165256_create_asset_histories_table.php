@@ -23,8 +23,9 @@ class CreateAssetHistoriesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->timestamp('date')->useCurrent();
-            $table->enum('status', ['available' , 'dipinjam', 'rusak', 'hilang', 'servis']);
+            $table->timestamp('start_date')->useCurrent();
+            $table->timestamp('finnish_date')->nullable();
+            $table->string('status', 255);
         });
     }
 
