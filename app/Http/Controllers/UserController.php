@@ -18,7 +18,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        // $this->middleware('auth:api');
         $this->middleware('auth.json');
     }
 
@@ -27,15 +27,16 @@ class UserController extends Controller
         $users = QueryBuilder::for($user)
         ->allowedFilters('name')
         ->allowedSorts('name')
-        ->get();
+        ->paginate(10);
         $this->responseRequestSuccess($users);          
     }
 
     public function show($id){
         $user = User::findOrFail($id);
         $user['history'] = $user->assetHistory()
-                            ->orderBy('date', 'desc')
-                            ->get(['date' , 'status' , 'id']);
+                            ->orderBy('start_date', 'desc')
+                            ->limit(5)
+                            ->get(['start_date' ,'finish_date' , 'id']);
 
         foreach($user['history'] as $hist){
             $asset = AssetHistory::find($hist['id'])
@@ -83,7 +84,7 @@ class UserController extends Controller
         $asset = User::findOrFail($id)->
                 asset()->
                 where('assets.status','!=', 'available')->
-                get();
+                paginate(10);
         $this->responseRequestSuccess($asset);
     }
 }
