@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
+use PDO;
 
 class Asset extends Model
 {
@@ -44,5 +45,9 @@ class Asset extends Model
 
     public function company(){
         return $this->belongsTo(Company::class);
+    }
+
+    public function managedUser(){
+        return $this->hasOneThrough(AssetHistory::class, User::class);
     }
 }

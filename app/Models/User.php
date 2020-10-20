@@ -49,6 +49,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(AssetHistory::class);
     }
 
+    public function managingAsset(){
+        return $this->hasManyThrough(AssetHistory::class, Asset::class);
+    }
+
     public static function getValidationRules(){
         return [
             'name' => 'required',
