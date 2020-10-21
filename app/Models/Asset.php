@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Models;
+
+use App\Observers\AssetObeserver;
 use Illuminate\Database\Eloquent\Model;
 use PDO;
 
 class Asset extends Model
 {
+    use AssetObeserver;
     /**
      * The attributes that are mass assignable.
      *

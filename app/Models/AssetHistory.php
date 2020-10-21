@@ -14,8 +14,7 @@ class AssetHistory extends Model
         'user_id',
         'asset_id',
         'status',
-        'start_date',
-        'finish_date',
+        'date',
     ];
 
     public static function getValidationRules(){

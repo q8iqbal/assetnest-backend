@@ -23,8 +23,7 @@ class CreateAssetHistoriesTable extends Migration
                 ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->timestamp('start_date')->useCurrent();
-            $table->timestamp('finish_date')->nullable();
+            $table->timestamp('date')->useCurrent();
             $table->string('status', 255);
         });
     }

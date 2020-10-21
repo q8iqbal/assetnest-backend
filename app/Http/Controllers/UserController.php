@@ -32,9 +32,9 @@ class UserController extends Controller
     public function show($id){
         $user = User::findOrFail($id);
         $user['history'] = $user->assetHistory()
-                            ->orderBy('start_date', 'desc')
+                            ->orderBy('date', 'desc')
                             ->limit(5)
-                            ->get(['start_date' ,'finish_date' , 'id']);
+                            ->get();
 
         foreach($user['history'] as $hist){
             $asset = AssetHistory::find($hist['id'])

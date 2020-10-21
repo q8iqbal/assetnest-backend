@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Asset;
 use App\Models\AssetHistory;
+use Carbon\Carbon;
+use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -35,9 +37,9 @@ class AssetController extends Controller
         $asset = Asset::findOrFail($id);
         $asset['history'] = $asset
                             ->assetHistory()
-                            ->orderBy('start_date', 'desc')
+                            ->orderBy('date', 'desc')
                             ->limit(5)
-                            ->get(['start_date', 'start_date' , 'id']);
+                            ->get();
 
         foreach($asset['history'] as $hist){
             $user = AssetHistory::find($hist['id'])
@@ -58,7 +60,19 @@ class AssetController extends Controller
 
         $data = $request->json()->get('asset');
         $data['company_id'] = Auth::user()->company_id;
+
         $asset = Asset::firstOrNew($data);
+        $asset['status'] = 'available';
+
+        if(! $asset->exists){
+            $asset->save();
+            $userId = Auth::user()->id;
+            AssetHistory::create([
+                'user_id' => $userId,
+                'asset_id' => $asset->id,
+                'status' => $asset->status,
+            ]);
+        }
 
         $this->responseRequestSuccess($asset);
     }
@@ -68,8 +82,17 @@ class AssetController extends Controller
         $this->validateJson($request, 'asset' ,Asset::getValidationRules());
 
         $assetNew = $request->json()->get('asset');
-        $asset = Asset::findOrFail($id)->update($assetNew);
+        $asset = Asset::findOrFail($id);
 
+        if($asset->status != $assetNew['status']){
+            $userId = Auth::user()->id;
+            AssetHistory::create([
+                'user_id' => $userId,
+                'asset_id' => $asset->id,
+                'status' => $asset->status,
+            ]);
+        }
+        $asset->update($assetNew);
         $this->responseRequestSuccess($asset);
     }
 
