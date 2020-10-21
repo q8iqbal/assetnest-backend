@@ -17,6 +17,7 @@ $router->group(['prefix' => 'users'], function () use ($router){
     $router->get('/thrash', ['uses' => 'UserController@thrash']);
     $router->get('/{id}', ['uses' => 'UserController@show']);
     $router->get('/{id}/assets', ['uses' => 'UserController@assetHolded']);
+    $router->get('/{id}/history', ['uses' => 'UserController@assetHistory']);
     $router->post('/', ['uses' => 'UserController@store']);
     $router->post('/image', ['uses' => 'FileController@userPicture']);
     $router->put('/{id}', ['uses' => 'UserController@update']);

@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -85,7 +86,23 @@ class UserController extends Controller
                 asset()->
                 where('assets.status','!=', 'available');
         
-        $assets = QueryBuilder::for($asset)->allowedFilters('asset_histories.status')->paginate(10);
+        $assets = QueryBuilder::for($asset)
+        ->allowedFilters('asset_histories.status')
+        ->allowedSorts('assets.name')
+        ->paginate(10);
         $this->responseRequestSuccess($assets);
+    }
+
+    public function assetHistory($id){
+        $temp = AssetHistory::where('user_id', $id);
+
+        $history = QueryBuilder::for($temp)
+        ->select('asset_histories.*','assets.name')
+        ->join('assets', 'assets.id', 'asset_histories.asset_id')
+        ->allowedFilters(['asset_histories.status', 'assets.name'])
+        ->get();
+
+        // TO DO querybuilder for history + assetname + assetPic
+        $this->responseRequestSuccess($history);
     }
 }
