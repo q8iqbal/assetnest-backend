@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Symfony\Component\VarDumper\VarDumper;
 
 class UserController extends Controller
 {
@@ -19,7 +16,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
         $this->middleware('auth.json');
     }
 
