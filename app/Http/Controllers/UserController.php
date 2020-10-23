@@ -90,8 +90,8 @@ class UserController extends Controller
                 where('assets.status','!=', 'available');
         
         $assets = QueryBuilder::for($asset)
-        ->allowedFilters('asset_histories.status')
-        ->allowedSorts('assets.name')
+        ->allowedFilters(['assets.status','assets.name', 'assets.type'])
+        ->allowedSorts(['assets.status','assets.name', 'assets.type'])
         ->paginate(10);
         $this->responseRequestSuccess($assets);
     }
@@ -102,7 +102,7 @@ class UserController extends Controller
         $history = QueryBuilder::for($temp)
         ->select('asset_histories.*','assets.name', 'assets.image')
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
-        ->allowedFilters(['asset_histories.status', 'assets.name'])
+        ->allowedFilters(['asset_histories.status', 'assets.name', 'assets.type'])
         ->get();
         $this->responseRequestSuccess($history);
     }

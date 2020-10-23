@@ -26,8 +26,8 @@ class AssetController extends Controller
     {
         $asset = Asset::class;
         $assets = QueryBuilder::for($asset)
-            ->allowedFilters(['code','name','location'])
-            ->allowedSorts(['name','location','code'])
+            ->allowedFilters(['code','name','location','status','type'])
+            ->allowedSorts(['name','location','code','status','type'])
             ->paginate(10);
         $this->responseRequestSuccess($assets);
     }
