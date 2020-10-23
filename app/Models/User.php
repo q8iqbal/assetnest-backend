@@ -25,7 +25,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'company_id',
         'name',
         'email',
-        'picture',
+        'image',
         'password',
         'role',
     ];
@@ -37,7 +37,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
-        'deleted_at',
     ];
     public $timestamps = false;
 
@@ -58,7 +57,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'picture' => 'string',
+            'image' => 'string',
         ];
     }
 

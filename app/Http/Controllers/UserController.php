@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -21,7 +22,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $user = User::class;
+        $user = User::where('role', '!=', 'owner');
         $users = QueryBuilder::for($user)
         ->allowedFilters('name')
         ->allowedSorts('name')
@@ -48,28 +49,33 @@ class UserController extends Controller
 
     public function store(Request $request){
         $this->validateJson($request, 'user' ,User::getValidationRules());
-        $user = User::create($request->json()->get('user'));
-        $this->responseRequestSuccess($user);
+        $user = $request->json()->get('user');
+        $user['company_id'] = Auth::user()->company_id;
+        $createdUser = User::create($user);
+        $this->responseRequestSuccess($createdUser);
     }
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'user' ,User::getValidationRules());
         $user = User::findOrFail($id);
         $user->update($request->json()->get('user'));
         $this->responseRequestSuccess($user);
     }
-
+    
     public function destroy($id)
     {
         $user = User::findOrFail($id)->delete();
         $this->responseRequestSuccess($user);
     }
 
-    public function thrash()
+    public function erased()
     {
-        $user = User::onlyTrashed()->get();
-        $this->responseRequestSuccess($user);
+        $user = User::onlyTrashed();
+        $users = QueryBuilder::for($user)
+        ->allowedFilters('name')
+        ->allowedSorts('name')
+        ->paginate(10);
+        $this->responseRequestSuccess($users);
     }
 
     public function restore($id)
@@ -94,12 +100,10 @@ class UserController extends Controller
         $temp = AssetHistory::where('user_id', $id);
 
         $history = QueryBuilder::for($temp)
-        ->select('asset_histories.*','assets.name')
+        ->select('asset_histories.*','assets.name', 'assets.image')
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->allowedFilters(['asset_histories.status', 'assets.name'])
         ->get();
-
-        // TO DO querybuilder for history + assetname + assetPic
         $this->responseRequestSuccess($history);
     }
 }

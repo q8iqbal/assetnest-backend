@@ -73,6 +73,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        $this->responseRequestSuccess(['logout sucess']);
+        $this->responseRequestSuccess(['massage'=>'logout sucess']);
     }
 }

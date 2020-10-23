@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('name', 255);
             $table->string('email', 255);
             $table->string('password', 255);
-            $table->string('picture', 255)->nullable();
+            $table->string('image', 255)->nullable();
             $table->enum('role', ['owner', 'admin', 'user']);
             $table->softDeletes();
         });

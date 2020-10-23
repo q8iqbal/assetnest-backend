@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-    const USER_PICTURE_PATH = '/upload/user/';
-    const ASSET_PICTURE_PATH = '/upload/asset/';
-    const COMPANY_PICTURE_PATH = '/upload/company/';
+    const USER_IMAGE_PATH = '/upload/user/';
+    const ASSET_IMAGE_PATH = '/upload/asset/';
+    const COMPANY_IMAGE_PATH = '/upload/company/';
     const ASSET_ATTACHMENT_PATH = '/upload/atatchment/';
 
     public function uploadFile(Request $request, $destination_path, $fileKey)
@@ -33,21 +33,21 @@ class FileController extends Controller
         }
     }
 
-    public function userPicture(Request $request)
+    public function userImage(Request $request)
     {
-        $path  = $this->uploadFile($request, self::USER_PICTURE_PATH , 'image')['path'];
+        $path  = $this->uploadFile($request, self::USER_IMAGE_PATH , 'image')['path'];
         $this->responseRequestSuccess(['path' => $path]);
     }
 
-    public function companyLogo(Request $request)
+    public function companyImage(Request $request)
     {
-        $path  = $this->uploadFile($request, self::COMPANY_PICTURE_PATH , 'image')['path'];
+        $path  = $this->uploadFile($request, self::COMPANY_IMAGE_PATH , 'image')['path'];
         $this->responseRequestSuccess(['path' => $path]);
     }
 
-    public function assetPicture(Request $request)
+    public function assetImage(Request $request)
     {
-        $path  = $this->uploadFile($request, self::ASSET_PICTURE_PATH , 'image')['path'];
+        $path  = $this->uploadFile($request, self::ASSET_IMAGE_PATH , 'image')['path'];
         $this->responseRequestSuccess(['path' => $path]);
     }
 

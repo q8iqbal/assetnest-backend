@@ -23,7 +23,7 @@ class CreateAssetsTable extends Migration
             $table->string('name',255);
             $table->enum('status', ['available' , 'dipinjam' , 'diservis' , 'hilang' , 'rusak']);
             $table->string('price',255);
-            $table->string('photo',255)->nullable();
+            $table->string('image',255)->nullable();
             $table->string('location',255)->nullable();
             $table->string('note', 255)->nullable();
             $table->enum('type', ['elektronik', 'kendaraan', 'dokumen', 'lain-lain']);

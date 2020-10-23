@@ -103,7 +103,7 @@ class AssetController extends Controller
     }
 
     public function attachment($id){
-        $attachments = Asset::findOrFail($id)->attachment()->get();
+        $attachments = Asset::findOrFail($id)->assetAttachment()->get();
         $this->responseRequestSuccess($attachments);
     }
 }

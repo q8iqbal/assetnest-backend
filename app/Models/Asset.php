@@ -17,7 +17,7 @@ class Asset extends Model
     protected $fillable = [
         'type',
         'company_id',
-        'photo',
+        'image',
         'code',
         'name',
         'status',
