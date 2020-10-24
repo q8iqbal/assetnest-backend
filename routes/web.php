@@ -15,6 +15,7 @@ $router->group(['prefix' => 'users'], function () use ($router){
     $router->post('/', ['uses' => 'UserController@store']);
     $router->post('/image', ['uses' => 'FileController@userImage']);
     $router->put('/{id}', ['uses' => 'UserController@update']);
+    $router->put('/{id}/password', ['uses' => 'UserController@changePassword']);
     $router->put('/{id}/restore', ['uses' => 'UserController@restore']);
     $router->delete('/{id}', ['uses' => 'UserController@destroy']);
 });
@@ -26,12 +27,17 @@ $router->group(['prefix' => 'companies'], function () use ($router){
 });
 
 $router->group(['prefix' => 'assets'], function () use ($router){
-    $router->get('/', 'AssetController@index');
-    $router->get('/{id}','AssetController@show');
+    $router->get('/', ['uses' => 'AssetController@index' ]);
+    $router->get('/{id}',['uses' => 'AssetController@show']);
     $router->get('/{id}/attachment', ['uses' => 'AssetController@attachment']);
     $router->post('/{id}/attachment', ['uses' => 'FileController@assetAttachment']);
     $router->post('/image', ['uses' => 'FileController@assetImage']);
-    $router->post('/', 'AssetController@store');
-    $router->put('/{id}', 'AssetController@update');
-    $router->delete('/{id}', 'AssetController@destroy');
+    $router->post('/', ['uses' => 'AssetController@store']);
+    $router->put('/{id}', ['uses' => 'AssetController@update']);
+    $router->delete('/{id}', ['uses' => 'AssetController@destroy']);
+});
+
+$router->group(['prefix' => 'histories'], function () use ($router){
+    $router->get('/', ['uses' => 'AssetHistoryController@index']);
+    $router->delete('/{id}', ['uses' => 'AssetHistoryController@destroy']);
 });

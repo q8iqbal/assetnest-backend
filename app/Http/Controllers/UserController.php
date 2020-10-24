@@ -6,6 +6,7 @@ use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -103,7 +104,17 @@ class UserController extends Controller
         ->select('asset_histories.*','assets.name', 'assets.image')
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->allowedFilters(['asset_histories.status', 'assets.name', 'assets.type'])
+        ->allowedSorts(['asset_histories.status', 'assets.name', 'assets.type'])
         ->get();
         $this->responseRequestSuccess($history);
+    }
+
+    public function changePassword(Request $request,$id){
+        $newPassword = Hash::make($request->json()->get('user')['new password']);
+        
+        User::findOrFail($id)->update([
+            'password' => $newPassword,
+        ]);
+        $this->responseRequestSuccess(null);
     }
 }

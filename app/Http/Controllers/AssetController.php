@@ -79,8 +79,6 @@ class AssetController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validateJson($request, 'asset' ,Asset::getValidationRules());
-
         $assetNew = $request->json()->get('asset');
         $asset = Asset::findOrFail($id);
 
