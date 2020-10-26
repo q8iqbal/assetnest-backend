@@ -56,9 +56,8 @@ class AuthController extends Controller
     }
 
     public function login(Request $request){
-        $this->validate($request, User::getLoginValidationRules());
-        $credentials = $request->only(['email', 'password']);
-
+        $this->validateJson($request, 'user' , User::getLoginValidationRules());
+        $credentials = $request->json()->get('user');
         try {
             if (! $token = Auth::attempt($credentials)) {
                 $this->responseRequestError(['invalid_credentials'], 401);

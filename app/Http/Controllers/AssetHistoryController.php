@@ -24,7 +24,7 @@ class AssetHistoryController extends Controller
         ->where('users.company_id', $companyId)
         ->allowedFilters(['asset_histories.status', 'assets.name', 'users.name'])
         ->allowedSorts(['asset_histories.status', 'assets.name', 'users.name'])
-        ->get();
+        ->paginate(10);
         $this->responseRequestSuccess($hists);
     }
 

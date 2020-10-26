@@ -6,11 +6,6 @@ use Closure;
 
 class JsonCheck
 {
-
-    protected $except = [
-        'api/tes',
-    ];
-
     /**
      * Handle an incoming request.
      *

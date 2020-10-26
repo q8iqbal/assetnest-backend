@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -24,15 +25,15 @@ class CompanyController extends Controller
         $this->responseRequestSuccess($companies);
     }
     
-    public function show($id)
+    public function show()
     {
-        $company = Company::findOrFail($id);
+        $company = Company::findOrFail(Auth::user()->company_id);
         $this->responseRequestSuccess($company);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $company = Company::findOrFail($id);
+        $company = Company::findOrFail(Auth::user()->company_id);
         $company->update($request->json()->get('company'));
         $this->responseRequestSuccess($company);
     }

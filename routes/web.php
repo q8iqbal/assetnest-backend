@@ -3,7 +3,7 @@
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 $router->post('register', 'AuthController@register');
-$router->get('login', 'AuthController@login');
+$router->post('login', 'AuthController@login');
 $router->get('logout', 'AuthController@logout');
 
 $router->group(['prefix' => 'users'], function () use ($router){
@@ -21,15 +21,16 @@ $router->group(['prefix' => 'users'], function () use ($router){
 });
 
 $router->group(['prefix' => 'companies'], function () use ($router){
-    $router->get('/{id}', ['uses' => 'CompanyController@show']);
+    $router->get('/', ['uses' => 'CompanyController@show']);
     $router->post('/image', ['uses' => 'FileController@companyImage']);
-    $router->put('/{id}', ['uses' => 'CompanyController@update']);
+    $router->put('/', ['uses' => 'CompanyController@update']);
 });
 
 $router->group(['prefix' => 'assets'], function () use ($router){
     $router->get('/', ['uses' => 'AssetController@index' ]);
     $router->get('/{id}',['uses' => 'AssetController@show']);
     $router->get('/{id}/attachment', ['uses' => 'AssetController@attachment']);
+    $router->get('/{id}/history', ['uses' => 'AssetController@assetHistory']);
     $router->post('/{id}/attachment', ['uses' => 'FileController@assetAttachment']);
     $router->post('/image', ['uses' => 'FileController@assetImage']);
     $router->post('/', ['uses' => 'AssetController@store']);

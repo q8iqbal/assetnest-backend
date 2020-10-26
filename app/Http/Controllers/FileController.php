@@ -10,7 +10,7 @@ class FileController extends Controller
     const USER_IMAGE_PATH = '/upload/user/';
     const ASSET_IMAGE_PATH = '/upload/asset/';
     const COMPANY_IMAGE_PATH = '/upload/company/';
-    const ASSET_ATTACHMENT_PATH = '/upload/atatchment/';
+    const ASSET_ATTACHMENT_PATH = '/upload/attachment/';
 
     public function uploadFile(Request $request, $destination_path, $fileKey)
     {
