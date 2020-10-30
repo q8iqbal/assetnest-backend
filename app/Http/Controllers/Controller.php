@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +14,12 @@ class Controller extends BaseController
     
     protected function respondWithToken($token , $user)
     {
-        return response()->json([
+        throw new HttpResponseException(response()->json([
             'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
             'user' => $user,
-        ], 200);
+        ], 200) );
     }
 
     public function validateJson(Request $request, $key , $rule){
@@ -36,10 +37,7 @@ class Controller extends BaseController
         throw new HttpResponseException(response()->json([
             'status' => 'success', 
             'data' => $ret,
-        ], 200)
-        ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        );
+        ], 200));
     }
 
     protected function responseRequestError($message = 'Bad request', $statusCode = 200)
@@ -47,10 +45,7 @@ class Controller extends BaseController
         throw new HttpResponseException(response()->json([
             'status' => 'error', 
             'error' => $message,
-        ], $statusCode)
-        ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        );
+        ], $statusCode));
     }
 }
 

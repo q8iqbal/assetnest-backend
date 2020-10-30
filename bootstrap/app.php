@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\CorsMiddleware;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
@@ -73,10 +75,9 @@ $app->configure('query-builder');
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\JsonCheck::class
-//     App\Http\Middleware\Authenticate::class
-// ]);
+$app->middleware([
+    CorsMiddleware::class,
+]);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
