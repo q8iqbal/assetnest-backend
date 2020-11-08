@@ -36,27 +36,17 @@ class UserController extends Controller
     public function show($id){
         $user = User::where('company_id',Auth::user()->company_id)
                 ->findOrFail($id);
-
-        //ganti join + paginate buat histori
-        // $user['history'] = $user->assetHistory()
-        //                     ->orderBy('date', 'desc')
-        //                     ->limit(5)
-        //                     ->get();
-        // foreach($user['history'] as $hist){
-        //     $asset = AssetHistory::find($hist['id'])
-        //     ->asset()
-        //     ->get('name')
-        //     ->all();
-        //     $hist['name'] = $asset[0]['name'];
-        // }
         $this->responseRequestSuccess($user);
     }
 
     public function store(Request $request){
         $this->validateJson($request, 'user' ,User::getValidationRules());
         $user = $request->json()->get('user');
+
         $user['company_id'] = Auth::user()->company_id;
+        $user['password'] = Hash::make($user['password']);
         $createdUser = User::create($user);
+
         $this->responseRequestSuccess($createdUser);
     }
 

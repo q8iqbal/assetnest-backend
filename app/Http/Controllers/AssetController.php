@@ -128,5 +128,16 @@ class AssetController extends Controller
         $this->responseRequestSuccess($history);
     }
 
+    public function count(){
+        // $temp = Asset::class;
+        $temp = Asset::where('company_id', Auth::user()->company_id);
+
+        $count = QueryBuilder::for($temp)
+        ->allowedFilters('type')
+        ->count();
+
+        $this->responseRequestSuccess($count);
+    }
+
     //delete attachment
 }

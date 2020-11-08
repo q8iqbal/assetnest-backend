@@ -27,6 +27,7 @@ $router->group(['prefix' => 'companies'], function () use ($router){
 });
 
 $router->group(['prefix' => 'assets'], function () use ($router){
+    $router->get('/count', ['uses' => 'AssetController@count']);
     $router->get('/', ['uses' => 'AssetController@index' ]);
     $router->get('/{id}',['uses' => 'AssetController@show']);
     $router->get('/{id}/attachment', ['uses' => 'AssetController@attachment']);
