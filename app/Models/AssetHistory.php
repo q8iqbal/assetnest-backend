@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class AssetHistory extends Model
@@ -33,5 +36,18 @@ class AssetHistory extends Model
 
     public function asset(){
         return $this->belongsTo(Asset::class);
+    }
+
+    // TO DO :p
+    // public function scopeAfter(Builder $query, $date){
+
+    // }
+    
+    // public function scopeBefore(Builder $query, $date){
+
+    // }
+
+    public function scopeBetween(Builder $query,$startDate, $endDate){
+        return $query->whereBetween('date', [Carbon::parse($startDate), Carbon::parse($endDate)]);
     }
 }

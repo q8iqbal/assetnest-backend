@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssetHistory;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AssetHistoryController extends Controller
@@ -22,7 +23,7 @@ class AssetHistoryController extends Controller
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->join('users', 'users.id', 'asset_histories.user_id')
         ->where('users.company_id', $companyId)
-        ->allowedFilters(['asset_histories.status', 'assets.name', 'users.name'])
+        ->allowedFilters(['asset_histories.status', 'assets.name', 'users.name' , AllowedFilter::scope('between')])
         ->allowedSorts(['asset_histories.status', 'assets.name', 'users.name'])
         ->paginate(10);
         $this->responseRequestSuccess($hists);
