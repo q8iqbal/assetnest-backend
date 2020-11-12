@@ -26,7 +26,7 @@ class CreateAssetsTable extends Migration
             $table->string('image',255)->nullable();
             $table->string('location',255)->nullable();
             $table->string('note', 255)->nullable();
-            $table->enum('type', ['elektronik', 'kendaraan', 'dokumen', 'lain-lain']);
+            $table->enum('type', ['Desktop', 'Vehicle', 'Machine', 'Accessories', 'Document', 'etc']);
             $table->timestamp('purchase_date',0)->useCurrent();
         });
     }
