@@ -19,12 +19,12 @@ class AssetHistoryController extends Controller
         $companyId = Auth::user()->company_id;
         $hist = AssetHistory::class;
         $hists = QueryBuilder::for($hist)
-        ->select('asset_histories.*','assets.name as asset', 'users.name as user')
+        ->select('asset_histories.*','assets.name as asset','assets.code as code' , 'users.name as user')
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->join('users', 'users.id', 'asset_histories.user_id')
         ->where('users.company_id', $companyId)
-        ->allowedFilters(['asset_histories.status', 'assets.name', 'users.name' , AllowedFilter::scope('between')])
-        ->allowedSorts(['asset_histories.status', 'assets.name', 'users.name'])
+        ->allowedFilters(['status', 'asset', 'code', 'user', 'date' , AllowedFilter::scope('between')])
+        ->allowedSorts(['status', 'asset', 'code', 'user', 'date'])
         ->paginate(10);
         $this->responseRequestSuccess($hists);
     }
