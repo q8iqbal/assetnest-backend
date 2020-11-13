@@ -91,6 +91,12 @@ class UserController extends Controller
     }
 
     public function assetHolded($id){
+        // User::where('company_id',Auth::user()->company_id)
+        //         ->findOrFail($id)
+        //         ->asset()
+        //         ->where('assets.status','!=', 'available')
+        //         ->firstOrFail();
+
         $asset = User::where('company_id',Auth::user()->company_id)
                 ->findOrFail($id)
                 ->asset()
@@ -105,8 +111,9 @@ class UserController extends Controller
 
     public function assetHistory($id){
         User::where('company_id', Auth::user()->company_id)->findOrFail($id);
+        // AssetHistory::where('user_id', $id)->firstOrFail();
 
-        $temp = AssetHistory::where('user_id', $id)->firstOrFail();
+        $temp = AssetHistory::where('user_id', $id);
 
         $history = QueryBuilder::for($temp)
         ->select('asset_histories.*','assets.name', 'assets.image')
