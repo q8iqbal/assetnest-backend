@@ -19,7 +19,13 @@ class AssetHistoryController extends Controller
         $companyId = Auth::user()->company_id;
         $hist = AssetHistory::class;
         $hists = QueryBuilder::for($hist)
-        ->select('asset_histories.*','assets.name as asset','assets.code as code' , 'users.name as user')
+        ->select(
+            'asset_histories.date as date',
+            'asset_histories.status as status',
+            'assets.name as asset',
+            'assets.code as code' , 
+            'users.name as user'
+        )
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->join('users', 'users.id', 'asset_histories.user_id')
         ->where('users.company_id', $companyId)
