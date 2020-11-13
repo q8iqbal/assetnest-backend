@@ -1,5 +1,4 @@
 <?php
-use Symfony\Component\HttpFoundation\Request as Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +24,5 @@ $app = require __DIR__.'/../bootstrap/app.php';
 | and wonderful application we have prepared for them.
 |
 */
-$request = Request::createFromGlobals();
 
 $app->run();
