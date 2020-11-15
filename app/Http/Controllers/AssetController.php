@@ -106,7 +106,7 @@ class AssetController extends Controller
         ->join('users', 'users.id', 'asset_histories.user_id')
         ->allowedFilters(['status', 'name', 'date'])
         ->allowedSorts(['asset_histories.status', 'users.name'])
-        ->paginate(10);
+        ->paginate(5);
         
         $this->responseRequestSuccess($history);
     }
