@@ -99,7 +99,7 @@ class AssetController extends Controller
     public function assetHistory($id){
         Asset::where('company_id', Auth::user()->company_id)->findOrFail($id);
 
-        $temp = AssetHistory::where('asset_id', $id)->firstOrFail();
+        $temp = AssetHistory::where('asset_id', $id);
 
         $history = QueryBuilder::for($temp)
         ->select('asset_histories.*','users.name')
