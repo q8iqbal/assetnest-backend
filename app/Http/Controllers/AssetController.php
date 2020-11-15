@@ -102,9 +102,9 @@ class AssetController extends Controller
         $temp = AssetHistory::where('asset_id', $id);
 
         $history = QueryBuilder::for($temp)
-        ->select('asset_histories.*','users.name')
+        ->select('asset_histories.*','users.name as name')
         ->join('users', 'users.id', 'asset_histories.user_id')
-        ->allowedFilters(['asset_histories.status', 'users.name'])
+        ->allowedFilters(['status', 'name', 'date'])
         ->allowedSorts(['asset_histories.status', 'users.name'])
         ->paginate(10);
         
