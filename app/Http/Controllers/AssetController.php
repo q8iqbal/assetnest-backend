@@ -23,8 +23,7 @@ class AssetController extends Controller
 
     public function index()
     {
-        Asset::where('company_id', Auth::user()->company_id)->firstOrFail();
-
+        Asset::where('company_id', Auth::user()->company_id);
         $asset = Asset::where('company_id', Auth::user()->company_id);
 
         $assets = QueryBuilder::for($asset)
@@ -37,22 +36,6 @@ class AssetController extends Controller
     public function show($id)
     {
         $asset = Asset::where('company_id', Auth::user()->company_id)->findOrFail($id);
-        // $asset['history'] = $asset
-        //                     ->assetHistory()
-        //                     ->orderBy('date', 'desc')
-        //                     ->limit(5)
-        //                     ->get();
-
-        // foreach($asset['history'] as $hist){
-        //     $user = AssetHistory::find($hist['id'])
-        //     ->user()
-        //     ->withTrashed()
-        //     ->get('name')
-        //     ->all();
-            
-        //     $hist['user'] = $user[0]['name'];
-        // }
-
         $this->responseRequestSuccess($asset);
     }
 
