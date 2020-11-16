@@ -102,7 +102,7 @@ class AssetController extends Controller
         $temp = AssetHistory::where('asset_id', $id);
 
         $history = QueryBuilder::for($temp)
-        ->select('asset_histories.*','users.name as name')
+        ->select('asset_histories.status as status', 'asset_histories.date as date','users.name as name')
         ->join('users', 'users.id', 'asset_histories.user_id')
         ->allowedFilters(['status', 'name', 'date'])
         ->allowedSorts(['status', 'name', 'date'])
