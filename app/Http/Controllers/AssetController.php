@@ -58,9 +58,9 @@ class AssetController extends Controller
                 'asset_id' => $asset->id,
                 'status' => $asset->status,
             ]);
+            $this->responseRequestSuccess($asset);
         }
-
-        $this->responseRequestSuccess($asset);
+        $this->responseRequestError('data exist');
     }
 
     public function update(Request $request, $id)
