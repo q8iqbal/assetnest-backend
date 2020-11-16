@@ -40,7 +40,7 @@ class Controller extends BaseController
         ], 200));
     }
 
-    protected function responseRequestError($message = 'Bad request', $statusCode = 406)
+    protected function responseRequestError($message = 'Bad request', $statusCode = 200)
     {
         throw new HttpResponseException(response()->json([
             'status' => 'error', 
