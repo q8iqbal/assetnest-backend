@@ -21,7 +21,7 @@ class CreateAssetsTable extends Migration
                 ->onUpdate('cascade');
             $table->string('code',255);
             $table->string('name',255);
-            $table->enum('status', ['available' , 'dipinjam' , 'diservis' , 'hilang' , 'rusak']);
+            $table->enum('status', ['available' , 'dipinjam' , 'diservis' , 'hilang' , 'rusak', 'barang baru']);
             $table->string('price',255);
             $table->string('image',255)->nullable();
             $table->string('location',255)->nullable();
