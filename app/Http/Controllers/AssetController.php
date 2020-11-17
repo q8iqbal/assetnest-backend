@@ -73,7 +73,7 @@ class AssetController extends Controller
             AssetHistory::create([
                 'user_id' => $userId,
                 'asset_id' => $asset->id,
-                'status' => $asset->status,
+                'status' => $assetNew['status'],
             ]);
         }
         $asset->update($assetNew);
