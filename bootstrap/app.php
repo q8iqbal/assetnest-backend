@@ -75,9 +75,11 @@ $app->configure('query-builder');
 |
 */
 
+/*
 $app->middleware([
     CorsMiddleware::class,
 ]);
+*/
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
