@@ -48,7 +48,7 @@ class AssetController extends Controller
 
         $asset = Asset::firstOrNew($data);
         //asset name boleh sama 
-        $asset['status'] = 'idle';
+        $asset['status'] = 'Idle';
 
         if(! $asset->exists){
             $asset->save();
