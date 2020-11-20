@@ -65,6 +65,16 @@ class AuthController extends Controller
         return $this->respondWithToken($token , Auth::user());
     }
 
+    public function loginMobile(Request $request){
+        $this->validateJson($request, 'user' , User::getLoginValidationRules());
+        $credentials = $request->json()->get('user');
+        if (! $token = Auth::setTTL(null)->attempt($credentials)) {
+            $this->responseRequestError(['invalid_credentials'], 401);
+        }
+
+        return $this->respondWithToken($token , Auth::user());
+    }
+
     public function logout()
     {
         Auth::logout();
