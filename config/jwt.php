@@ -1,6 +1,6 @@
 <?php
 
 return [
-        'ttl' => env('JWT_TTL', 1),
+        'ttl' => env('JWT_TTL', null),
     ];
 ?>
