@@ -6,6 +6,7 @@ use App\Models\AssetHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class AssetController extends Controller
@@ -28,7 +29,7 @@ class AssetController extends Controller
 
         $assets = QueryBuilder::for($asset)
             ->allowedFilters(['code','name','location','status','type'])
-            ->allowedSorts(['name','location','code','status','type'])
+            ->allowedSorts(['name','location','status','type',AllowedFilter::exact('code')])
             ->paginate(10);
         $this->responseRequestSuccess($assets);
     }
