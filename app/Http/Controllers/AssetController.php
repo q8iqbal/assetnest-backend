@@ -28,8 +28,8 @@ class AssetController extends Controller
         $asset = Asset::where('company_id', Auth::user()->company_id);
 
         $assets = QueryBuilder::for($asset)
-            ->allowedFilters(['code','name','location','status','type'])
-            ->allowedSorts(['name','location','status','type',AllowedFilter::exact('code')])
+            ->allowedFilters(['name','location','status','type', AllowedFilter::exact('code')])
+            ->allowedSorts(['name','location','code','status','type'])
             ->paginate(10);
         $this->responseRequestSuccess($assets);
     }
