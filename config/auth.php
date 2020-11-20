@@ -20,7 +20,8 @@ return [
                 'driver' => 'eloquent',
                 'model' => User::class,
             ]
-        ]
-    ];
+        ],
 
+        'ttl' => env('JWT_TTL', null),
+    ];
 ?>

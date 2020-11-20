@@ -46,11 +46,16 @@ class AssetController extends Controller
         $data = $request->json()->get('asset');
         $data['company_id'] = Auth::user()->company_id;
 
-        $asset = Asset::firstOrNew($data);
+        $asset = Asset::firstOrNew([
+            'code' => $data['code'],
+            'company_id' => $data['company_id'],
+        ]);
+        // $asset = Asset::firstOrNew($data);
         //asset name boleh sama 
         $asset['status'] = 'Idle';
 
         if(! $asset->exists){
+            $asset = Asset::firstOrNew($data);
             $asset->save();
             $userId = Auth::user()->id;
             AssetHistory::create([
