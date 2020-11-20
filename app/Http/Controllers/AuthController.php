@@ -15,7 +15,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login' , 'register']]);
+        $this->middleware('auth:api', ['except' => ['login' , 'register', 'loginMobile']]);
         $this->middleware('auth.json', ['except' => ['login']]);
     }
 

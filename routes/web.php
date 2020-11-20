@@ -4,7 +4,7 @@
 
 $router->post('register', 'AuthController@register');
 $router->post('login', 'AuthController@login');
-$router->post('loginMobile', 'AuthController@loginMobile');
+$router->post('login/mobile', 'AuthController@loginMobile');
 $router->get('logout', 'AuthController@logout');
 
 $router->group(['prefix' => 'users'], function () use ($router){
