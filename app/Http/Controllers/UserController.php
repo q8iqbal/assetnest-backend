@@ -54,8 +54,19 @@ class UserController extends Controller
     {
         $user = User::where('company_id',Auth::user()->company_id)
                 ->findOrFail($id);
-                
-        $user->update($request->json()->get('user'));
+
+        $data = $request->json()->get('user');
+        if(isset($data['password'])){
+            $data['password'] = Hash::make($data['password']);
+            $user->update($data);
+        }else{
+            $user->update([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'role' => $data['role'],
+                'image' => $data['image'],
+            ]);
+        }
         $this->responseRequestSuccess($user);
     }
     
@@ -128,12 +139,12 @@ class UserController extends Controller
     public function changePassword(Request $request,$id){
         $newPassword = Hash::make($request->json()->get('user')['password']);
         
-        User::where('company_id',Auth::user()->company_id)
-        ->findOrFail($id)
-        ->update([
+        User::where('company_id',Auth::user()->company_id)->findOrFail($id);
+
+        User::find($id)->update([
             'password' => $newPassword,
         ]);
         
-        $this->responseRequestSuccess(null);
+        $this->responseRequestSuccess("password changed");
     }
 }
