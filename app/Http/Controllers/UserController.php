@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -130,7 +131,14 @@ class UserController extends Controller
         ->select('asset_histories.*','assets.name', 'assets.image')
         ->join('assets', 'assets.id', 'asset_histories.asset_id')
         ->allowedFilters(['asset_histories.status', 'assets.name', 'assets.type'])
-        ->allowedSorts(['asset_histories.status', 'assets.name', 'assets.type'])
+        ->allowedSorts([
+            'asset_histories.status', 
+            'assets.name', 
+            'assets.type', 
+            'asset_histories.date',
+            AllowedSort::field('date', 'asset_histories.date' ),
+            AllowedSort::field('status', 'asset_histories.status' )
+        ])
         ->paginate(10);
         
         $this->responseRequestSuccess($history);
