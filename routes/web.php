@@ -7,6 +7,13 @@ $router->post('login', 'AuthController@login');
 $router->post('login/mobile', 'AuthController@loginMobile');
 $router->get('logout', 'AuthController@logout');
 
+$router->get('task', 'TaskController@index');
+$router->get('task/{id}', 'TaskController@show');
+$router->post('task', 'TaskController@store');
+$router->put('task/{id}', 'TaskController@update');
+$router->delete('task/{id}', 'TaskController@destroy');
+
+
 $router->group(['prefix' => 'users'], function () use ($router){
     $router->get('/', ['uses' => 'UserController@index']);
     $router->get('/erased', ['uses' => 'UserController@erased']);
