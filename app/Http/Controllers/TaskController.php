@@ -45,7 +45,8 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->json()->get('task');
-        $task = Task::find($id)->update($data);
+        $task = Task::find($id);
+        $task->update($data);
         $this->responseRequestSuccess($task);
     }
 }
