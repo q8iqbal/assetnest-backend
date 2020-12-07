@@ -11,7 +11,7 @@ $router->get('task', 'TaskController@index');
 $router->get('task/{id}', 'TaskController@show');
 $router->post('task', 'TaskController@store');
 $router->put('task/{id}', 'TaskController@update');
-$router->delete('task/{id}', 'TaskController@destroy');
+$router->delete('task/{id}', 'TaskController@delete');
 
 
 $router->group(['prefix' => 'users'], function () use ($router){
