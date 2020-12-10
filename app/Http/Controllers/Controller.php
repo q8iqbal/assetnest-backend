@@ -14,12 +14,12 @@ class Controller extends BaseController
     
     protected function respondWithToken($token , $user)
     {
-        throw new HttpResponseException(response()->json([
+        return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth::factory()->getTTL() * 60,
             'user' => $user,
-        ], 200) );
+        ], 200) ;
     }
 
     public function validateJson(Request $request, $key , $rule){
