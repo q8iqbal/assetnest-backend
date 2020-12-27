@@ -16,7 +16,8 @@ class Task extends Model
     protected $fillable = [
         'title',
         'description',
-        'date'
+        'date',
+        'cheked'
     ];
     public $timestamps = false;
 }
