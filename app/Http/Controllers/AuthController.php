@@ -35,7 +35,7 @@ class AuthController extends Controller
         
         if(!$company->exist && !$user->exists){
 
-            $company= Company::create($companyInput);
+            $company = Company::firstOrNew($companyInput);
             $company->save();
 
             $user = User::firstOrNew($userInput);
