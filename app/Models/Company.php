@@ -17,6 +17,7 @@ class Company extends Model
         'address',
         'description',
         'phone',
+        'image'
     ];
     public $timestamps = false;
 
