@@ -53,10 +53,10 @@ class AssetController extends Controller
         ]);
         // $asset = Asset::firstOrNew($data);
         //asset name boleh sama 
-        $asset['status'] = 'Idle';
 
         if(! $asset->exists){
             $asset = Asset::firstOrNew($data);
+            $asset['status'] = 'Idle';
             $asset->save();
             $userId = Auth::user()->id;
             AssetHistory::create([
